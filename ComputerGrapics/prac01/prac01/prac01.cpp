@@ -279,9 +279,11 @@ void DrawScene(HDC MyDC)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
-    
-    glBegin(GL_TRIANGLE_STRIP); // 점을 삼격형 형태로 이음
-    glColor3f(1.0f, 0.0f, 0.0f); // 색사이는 보간 = 중간색으로 대체됨
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    // 폴리곤모드는 여러개인데, 프론트 앤 백은 앞면과 뒷면을 보는 카메라에 따라 랜더링이 다르게 됨
+    // 이 모드를 사용하면 앞면과 뒷면을 그릴수 있게됨
+    glBegin(GL_TRIANGLE_FAN); // 폴리곤 모드가 라인아가 채워지지 않음 (채워지는건 기본)
+    glColor3f(1.0f, 0.0f, 0.0f); 
     glVertex2f(100, 100 );
     glColor3f(0.0f, 1.0f, 0.0f);
     glVertex2f(100, 200);
