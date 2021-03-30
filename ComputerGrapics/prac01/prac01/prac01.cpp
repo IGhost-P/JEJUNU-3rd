@@ -279,12 +279,16 @@ void DrawScene(HDC MyDC)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
+    
+    glBegin(GL_TRIANGLE_STRIP); // 점을 삼격형 형태로 이음
+    glColor3f(1.0f, 0.0f, 0.0f); // 색사이는 보간 = 중간색으로 대체됨
+    glVertex2f(100, 100 );
     glColor3f(0.0f, 1.0f, 0.0f);
-    glBegin(GL_POLYGON);
-    glVertex2f(0, 0);
-    glVertex2f(0, 100);
-    glVertex2f(100, 100);
-    glVertex2f(100, 0);
+    glVertex2f(100, 200);
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glVertex2f(200, 200);
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glVertex2f(200, 100);
     glEnd();
     
     SwapBuffers(MyDC);
