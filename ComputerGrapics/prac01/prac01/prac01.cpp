@@ -279,12 +279,12 @@ void DrawScene(HDC MyDC)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
-    glColor3f(1.0f, 0.0f, 0.0f);
+    glColor3f(0.0f, 1.0f, 0.0f);
     glBegin(GL_POLYGON);
+    glVertex2f(0, 0);
+    glVertex2f(0, 100);
     glVertex2f(100, 100);
-    glVertex2f(100, 200);
-    glVertex2f(200, 200);
-    glVertex2f(200, 100);
+    glVertex2f(100, 0);
     glEnd();
     
     SwapBuffers(MyDC);
