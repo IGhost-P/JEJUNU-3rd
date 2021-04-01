@@ -278,36 +278,67 @@ void DrawScene(HDC MyDC) // 그림 그리는곳
     
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    
+
+    // 집 창문
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    // 폴리곤모드는 여러개인데, 프론트 앤 백은 앞면과 뒷면을 보는 카메라에 따라 랜더링이 다르게 됨
-    // 이 모드를 사용하면 앞면과 뒷면을 그릴수 있게됨
-    glColor3f(1.0f, 0.0f, 0.0f);
+    glColor3f(0.0f, 0.0f, 0.0f);
     glBegin(GL_QUAD_STRIP);
-    glVertex2f(100, 100);
-    glVertex2f(100, 200);
-    glVertex2f(200, 100);
-    glVertex2f(200, 200); // 폴리곤은 시계방향으로 그리면됨
-    glVertex2f(300, 100);
-    glVertex2f(300, 200);
-    glVertex2f(400, 100);
-    glVertex2f(400, 200);
-
+    glVertex2f(115, 150);
+    glVertex2f(115, 175);
+    glVertex2f(135, 150);
+    glVertex2f(135, 175);
     glEnd();
-
+    //창문 색갈
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glColor3f(1.0f, 1.0f, 0.0f);
+    glColor3f(0.529412f, 0.807843f, 0.980392f);
+    glBegin(GL_QUAD_STRIP);
+    glVertex2f(115, 150);
+    glVertex2f(115, 175);
+    glVertex2f(135, 150);
+    glVertex2f(135, 175);
+    glEnd();
+
+    // 집본체 만들기
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glColor3f(0.0f, 0.0f, 0.0f);
     glBegin(GL_QUAD_STRIP);
     glVertex2f(100, 100);
     glVertex2f(100, 200);
-    glVertex2f(200, 100);
-    glVertex2f(200, 200);
-    glVertex2f(300, 100);
-    glVertex2f(300, 200);
-    glVertex2f(400, 100);
-    glVertex2f(400, 200);
-
+    glVertex2f(150, 100);
+    glVertex2f(150, 200); 
+    glVertex2f(180, 110);
+    glVertex2f(180, 210);
     glEnd();
+    // 집 색깔
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glColor3f(0.803922f, 0.521569f, 0.247059f);
+    glBegin(GL_QUAD_STRIP);
+    glVertex2f(100, 100);
+    glVertex2f(100, 200);
+    glVertex2f(150, 100);
+    glVertex2f(150, 200);
+    // 옆모습 명암주기
+    glColor3f(0.3f, 0.3f,0.3f);
+    glVertex2f(180, 110);
+    glVertex2f(180, 210);
+    glEnd();
+    // 집 지붕
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glBegin(GL_TRIANGLE_STRIP);
+    glVertex2f(130, 250);
+    glVertex2f(100, 200);
+    glVertex2f(150, 200);
+    glEnd();
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glBegin(GL_TRIANGLE_STRIP);
+    glVertex2f(130, 250);
+    glVertex2f(150, 200);
+    glVertex2f(180, 210);
+    glEnd();
+
     
     SwapBuffers(MyDC);
 
