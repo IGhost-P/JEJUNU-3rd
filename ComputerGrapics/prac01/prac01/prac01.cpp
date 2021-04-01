@@ -269,7 +269,7 @@ void Resize(int width, int height)
 /*
 * DrawScene : to draw a scene
 */
-void DrawScene(HDC MyDC)
+void DrawScene(HDC MyDC) // 그림 그리는곳
 {
     glEnable(GL_DEPTH_TEST);
 
@@ -282,15 +282,13 @@ void DrawScene(HDC MyDC)
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     // 폴리곤모드는 여러개인데, 프론트 앤 백은 앞면과 뒷면을 보는 카메라에 따라 랜더링이 다르게 됨
     // 이 모드를 사용하면 앞면과 뒷면을 그릴수 있게됨
-    glBegin(GL_TRIANGLE_FAN); // 폴리곤 모드가 라인아가 채워지지 않음 (채워지는건 기본)
-    glColor3f(1.0f, 0.0f, 0.0f); 
-    glVertex2f(100, 100 );
-    glColor3f(0.0f, 1.0f, 0.0f);
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glBegin(GL_QUAD_STRIP);
+    glVertex2f(100, 100);
     glVertex2f(100, 200);
-    glColor3f(0.0f, 0.0f, 1.0f);
-    glVertex2f(200, 200);
-    glColor3f(0.0f, 0.0f, 0.0f);
     glVertex2f(200, 100);
+    glVertex2f(200, 200); // 이유는 잘 모르겠으나, 기준점이랑 가장 가까운 두점을 먼저 라인을 그려야 사각형이 된다. 단순 시계방향X
+  
     glEnd();
     
     SwapBuffers(MyDC);
