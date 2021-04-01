@@ -278,7 +278,24 @@ void DrawScene(HDC MyDC) // 그림 그리는곳
     
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
+    //집 문
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glBegin(GL_QUAD_STRIP); // 사각형 잇기를 사용함
+    glVertex2f(170, 100);
+    glVertex2f(170, 145);
+    glVertex2f(190, 100);
+    glVertex2f(190, 145);
+    glEnd();
+    // 집 문 색깔
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glColor3f(0.956863f, 0.643137f, 0.376471f);
+    glBegin(GL_QUAD_STRIP);
+    glVertex2f(170, 100);
+    glVertex2f(170, 145);
+    glVertex2f(190, 100);
+    glVertex2f(190, 145);
+    glEnd();
     // 집 창문
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glColor3f(0.0f, 0.0f, 0.0f);
@@ -297,17 +314,14 @@ void DrawScene(HDC MyDC) // 그림 그리는곳
     glVertex2f(135, 150);
     glVertex2f(135, 175);
     glEnd();
-
     // 집본체 만들기
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glColor3f(0.0f, 0.0f, 0.0f);
     glBegin(GL_QUAD_STRIP);
     glVertex2f(100, 100);
     glVertex2f(100, 200);
-    glVertex2f(150, 100);
-    glVertex2f(150, 200); 
-    glVertex2f(180, 110);
-    glVertex2f(180, 210);
+    glVertex2f(200, 100);
+    glVertex2f(200, 200); 
     glEnd();
     // 집 색깔
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -315,29 +329,75 @@ void DrawScene(HDC MyDC) // 그림 그리는곳
     glBegin(GL_QUAD_STRIP);
     glVertex2f(100, 100);
     glVertex2f(100, 200);
-    glVertex2f(150, 100);
-    glVertex2f(150, 200);
-    // 옆모습 명암주기
-    glColor3f(0.3f, 0.3f,0.3f);
-    glVertex2f(180, 110);
-    glVertex2f(180, 210);
+    glVertex2f(200, 100);
+    glVertex2f(200, 200);
     glEnd();
     // 집 지붕
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glColor3f(0.0f, 0.0f, 0.0f);
-    glBegin(GL_TRIANGLE_STRIP);
-    glVertex2f(130, 250);
-    glVertex2f(100, 200);
-    glVertex2f(150, 200);
+    glBegin(GL_TRIANGLE_STRIP); // 삼각형 잇기를 사용함
+    glVertex2f(150, 250);
+    glVertex2f(90, 200);
+    glVertex2f(210, 200);
     glEnd();
-
+    // 집 지붕 색깔
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glBegin(GL_TRIANGLE_STRIP);
+    glVertex2f(150, 250);
+    glVertex2f(90, 200);
+    glVertex2f(210, 200);
+    glEnd();
+    /*-----------------------------------------*/
+    // 나뭇잎
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glColor3f(0.0f, 0.0f, 0.0f);
-    glBegin(GL_TRIANGLE_STRIP);
-    glVertex2f(130, 250);
-    glVertex2f(150, 200);
-    glVertex2f(180, 210);
+    glBegin(GL_LINE_LOOP); // 폴리곤도 가능하만, 선으로 해보았다.
+    glVertex2f(325, 400);
+    glVertex2f(340, 390);
+    glVertex2f(380, 370);
+    glVertex2f(378, 300);
+    glVertex2f(360, 200);
+    glVertex2f(325, 190);
+    glVertex2f(290, 200);
+    glVertex2f(272, 300);
+    glVertex2f(270, 370);
+    glVertex2f(310, 390);
     glEnd();
+    // 나뭇입 색깔
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glColor3f(0.133333f, 0.545098f, 0.133333f);
+    glBegin(GL_POLYGON); // 다각형 = 폴리곤 , 시계방향으로 이었다.
+    glVertex2f(325, 400);
+    glVertex2f(340, 390);
+    glVertex2f(380, 370);
+    glVertex2f(378, 300);
+    glVertex2f(360, 200);
+    glVertex2f(325, 190);
+    glVertex2f(290, 200);
+    glVertex2f(272, 300);
+    glVertex2f(270, 370);
+    glVertex2f(310, 390);
+    glEnd();
+    // 나무
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glBegin(GL_QUAD_STRIP);
+    glVertex2f(300, 100);
+    glVertex2f(300, 200);
+    glVertex2f(350, 100);
+    glVertex2f(350, 200);
+    glEnd();
+    // 나무 색깔
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glColor3f(0.803922f, 0.521569f, 0.247059f);
+    glBegin(GL_QUAD_STRIP);
+    glVertex2f(300, 100);
+    glVertex2f(300, 200);
+    glVertex2f(350, 100);
+    glVertex2f(350, 200);
+    glEnd();
+    
 
     
     SwapBuffers(MyDC);
