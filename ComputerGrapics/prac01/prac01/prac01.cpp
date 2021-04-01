@@ -283,15 +283,29 @@ void DrawScene(HDC MyDC) // 그림 그리는곳
     // 폴리곤모드는 여러개인데, 프론트 앤 백은 앞면과 뒷면을 보는 카메라에 따라 랜더링이 다르게 됨
     // 이 모드를 사용하면 앞면과 뒷면을 그릴수 있게됨
     glColor3f(1.0f, 0.0f, 0.0f);
-    glBegin(GL_POLYGON);
+    glBegin(GL_QUAD_STRIP);
     glVertex2f(100, 100);
     glVertex2f(100, 200);
-    glVertex2f(200, 200);
-    glVertex2f(300, 200); // 폴리곤은 시계방향으로 그리면됨
-    glVertex2f(400, 200);
-    glVertex2f(400, 100);
-    glVertex2f(300, 100);
     glVertex2f(200, 100);
+    glVertex2f(200, 200); // 폴리곤은 시계방향으로 그리면됨
+    glVertex2f(300, 100);
+    glVertex2f(300, 200);
+    glVertex2f(400, 100);
+    glVertex2f(400, 200);
+
+    glEnd();
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    glColor3f(1.0f, 1.0f, 0.0f);
+    glBegin(GL_QUAD_STRIP);
+    glVertex2f(100, 100);
+    glVertex2f(100, 200);
+    glVertex2f(200, 100);
+    glVertex2f(200, 200);
+    glVertex2f(300, 100);
+    glVertex2f(300, 200);
+    glVertex2f(400, 100);
+    glVertex2f(400, 200);
 
     glEnd();
     
