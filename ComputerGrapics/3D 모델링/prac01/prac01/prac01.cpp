@@ -10,6 +10,7 @@
 
 
 #define MAX_LOADSTRING 100
+#define IDT_TIMER 1 // 타이머 설정
 
 // 전역 변수:
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
@@ -25,7 +26,8 @@ void Resize(int width, int height);
 void DrawScene(HDC MyDC);
 
 GLfloat viewer[3] = { 2.0f,2.0f ,2.0f };
-
+//rotation 회전각도
+float theta = 0.0f;
 
 //-----------------------------------------------------
 GLfloat vertices[8][3] = {
@@ -172,6 +174,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         hRenderingContext = wglCreateContext(hDeviceContext);
         wglMakeCurrent(hDeviceContext, hRenderingContext);
+        break;
+
+        //Creat timer
+        SetTimer(hWnd, IDT_TIMER, 00, NULL);
+
         break;
 
     case WM_SIZE:
