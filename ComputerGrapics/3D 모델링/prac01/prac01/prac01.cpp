@@ -1,12 +1,12 @@
 ﻿// prac01.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
-// 2020. 7. 29.
+// 2021. 3. 23.
 // Created by Soo-Kyun Kim
 
 #include "framework.h"
 #include "prac01.h"
-#include "gl/gl.h"
-#include "gl/glu.h"
+#include "gl.h"
+#include "glu.h"
 
 
 #define MAX_LOADSTRING 100
@@ -23,6 +23,22 @@ HGLRC hRenderingContext;						// current rendering context
 bool bSetupPixelFormat(HDC hdc);
 void Resize(int width, int height);
 void DrawScene(HDC MyDC);
+
+//-----------------------------------------------------
+GLfloat vertices[8][3] = {
+    { -1.0f, -1.0f,  1.0f }, { -1.0f,  1.0f,  1.0f },
+    {  1.0f,  1.0f,  1.0f }, {  1.0f, -1.0f,  1.0f },
+    { -1.0f, -1.0f, -1.0f }, { -1.0f,  1.0f, -1.0f },
+    {  1.0f,  1.0f, -1.0f }, {  1.0f, -1.0f, -1.0f } };
+GLfloat colors[8][3] = {
+    { 0.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 1.0f },
+    { 1.0f, 1.0f, 1.0f }, { 1.0f, 0.0f, 1.0f },
+    { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f },
+    { 1.0f, 1.0f, 0.0f }, { 1.0f, 0.0f, 0.0f } };
+
+void Quad(int a, int b, int c, int d);
+//-----------------------------------------------------
+
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -89,7 +105,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_PRAC01));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName =  NULL; // 메뉴바 삭제
+    wcex.lpszMenuName = NULL; // MAKEINTRESOURCEW(IDC_PRAC01);
     wcex.lpszClassName  = szWindowClass;
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
@@ -111,7 +127,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-       CW_USEDEFAULT, 0, 800, 600, nullptr, nullptr, hInstance, nullptr);
+      CW_USEDEFAULT, 0, 800, 600, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
@@ -256,152 +272,85 @@ void Resize(int width, int height)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-        glViewport(0, 0, width, height);
+    glViewport(0, 0, width, height);
 
-        gluOrtho2D(0, 500, 0,  500);
-
+    if (width <= height)
+        glOrtho(-2.0, 2.0, -2.0 * (GLfloat)height / (GLfloat)width,
+            2.0 * (GLfloat)height / (GLfloat)width, 1.0, 10.0);
     
+    else
+        glOrtho(-2.0 * (GLfloat)width / (GLfloat)height,
+            2.0 * (GLfloat)width / (GLfloat)height, -2.0, 2.0, 1.0, 10.0);
+              
     return;
 
 }
 
-   
+/*
+  if (width <= height)
+        glOrtho(-2.0, 2.0, -2.0 * (GLfloat)height / (GLfloat)width,
+            2.0 * (GLfloat)height / (GLfloat)width, -2.0, 2.0);
+    //		glFrustum( -2.0, 2.0, -2.0*(GLfloat)cy/(GLfloat)cx,
+    //		                     2.0*(GLfloat)cy/(GLfloat)cx, 1.0, 10.0 );
+    else
+        glOrtho(-2.0 * (GLfloat)width / (GLfloat)height,
+            2.0 * (GLfloat)width / (GLfloat)height, -2.0, 2.0, -2.0, 2.0);
+
+    //		glFrustum( -2.0*(GLfloat)cx/(GLfloat)cy,
+    //		          2.0*(GLfloat)cx/(GLfloat)cy, -2.0, 2.0, 1.0, 10.0 );
+
+*/
+
+    /*
+    // 3D orthographic viewing
+    if (width <= height) {
+        double aspectHeight = height / (GLdouble)width;
+        glOrtho(-1, 1, -aspectHeight, aspectHeight, -1, 1);
+    }
+    else {
+        double aspectWidth = width / (GLdouble)height;
+        glOrtho(-aspectWidth, aspectWidth, -1, 1, -1, 1);
+    }
+    */
+    
+
 /*
 * DrawScene : to draw a scene
 */
-void DrawScene(HDC MyDC) // 그림 그리는곳
+void DrawScene(HDC MyDC)
 {
-    glEnable(GL_DEPTH_TEST);
-
+  
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
+    glClear(GL_COLOR_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    //집 문
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glColor3f(0.0f, 0.0f, 0.0f);
-    glBegin(GL_QUAD_STRIP); // 사각형 잇기를 사용함
-    glVertex2f(170, 100);
-    glVertex2f(170, 145);
-    glVertex2f(190, 100);
-    glVertex2f(190, 145);
-    glEnd();
-    // 집 문 색깔
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glColor3f(0.956863f, 0.643137f, 0.376471f);
-    glBegin(GL_QUAD_STRIP);
-    glVertex2f(170, 100);
-    glVertex2f(170, 145);
-    glVertex2f(190, 100);
-    glVertex2f(190, 145);
-    glEnd();
-    // 집 창문
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glColor3f(0.0f, 0.0f, 0.0f);
-    glBegin(GL_QUAD_STRIP);
-    glVertex2f(115, 150);
-    glVertex2f(115, 175);
-    glVertex2f(135, 150);
-    glVertex2f(135, 175);
-    glEnd();
-    //창문 색갈
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glColor3f(0.529412f, 0.807843f, 0.980392f);
-    glBegin(GL_QUAD_STRIP);
-    glVertex2f(115, 150);
-    glVertex2f(115, 175);
-    glVertex2f(135, 150);
-    glVertex2f(135, 175);
-    glEnd();
-    // 집본체 만들기
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glColor3f(0.0f, 0.0f, 0.0f);
-    glBegin(GL_QUAD_STRIP);
-    glVertex2f(100, 100);
-    glVertex2f(100, 200);
-    glVertex2f(200, 100);
-    glVertex2f(200, 200); 
-    glEnd();
-    // 집 색깔
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glColor3f(0.803922f, 0.521569f, 0.247059f);
-    glBegin(GL_QUAD_STRIP);
-    glVertex2f(100, 100);
-    glVertex2f(100, 200);
-    glVertex2f(200, 100);
-    glVertex2f(200, 200);
-    glEnd();
-    // 집 지붕
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glColor3f(0.0f, 0.0f, 0.0f);
-    glBegin(GL_TRIANGLE_STRIP); // 삼각형 잇기를 사용함
-    glVertex2f(150, 250);
-    glVertex2f(90, 200);
-    glVertex2f(210, 200);
-    glEnd();
-    // 집 지붕 색깔
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glBegin(GL_TRIANGLE_STRIP);
-    glVertex2f(150, 250);
-    glVertex2f(90, 200);
-    glVertex2f(210, 200);
-    glEnd();
-    /*-----------------------------------------*/
-    // 나뭇잎
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glColor3f(0.0f, 0.0f, 0.0f);
-    glBegin(GL_LINE_LOOP); // 폴리곤도 가능하만, 선으로 해보았다.
-    glVertex2f(325, 400);
-    glVertex2f(340, 390);
-    glVertex2f(380, 370);
-    glVertex2f(378, 300);
-    glVertex2f(360, 200);
-    glVertex2f(325, 190);
-    glVertex2f(290, 200);
-    glVertex2f(272, 300);
-    glVertex2f(270, 370);
-    glVertex2f(310, 390);
-    glEnd();
-    // 나뭇입 색깔
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glColor3f(0.133333f, 0.545098f, 0.133333f);
-    glBegin(GL_POLYGON); // 다각형 = 폴리곤 , 시계방향으로 이었다.
-    glVertex2f(325, 400);
-    glVertex2f(340, 390);
-    glVertex2f(380, 370);
-    glVertex2f(378, 300);
-    glVertex2f(360, 200);
-    glVertex2f(325, 190);
-    glVertex2f(290, 200);
-    glVertex2f(272, 300);
-    glVertex2f(270, 370);
-    glVertex2f(310, 390);
-    glEnd();
-    // 나무
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glColor3f(0.0f, 0.0f, 0.0f);
-    glBegin(GL_QUAD_STRIP);
-    glVertex2f(300, 100);
-    glVertex2f(300, 200);
-    glVertex2f(350, 100);
-    glVertex2f(350, 200);
-    glEnd();
-    // 나무 색깔
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glColor3f(0.803922f, 0.521569f, 0.247059f);
-    glBegin(GL_QUAD_STRIP);
-    glVertex2f(300, 100);
-    glVertex2f(300, 200);
-    glVertex2f(350, 100);
-    glVertex2f(350, 200);
-    glEnd();
-    
 
+    gluLookAt(2.0, 2.0, 2.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     
+    Quad(0, 3, 2, 1);
+    Quad(1, 2, 6, 5);
+    Quad(2, 3, 7, 6);
+    Quad(3, 0, 4, 7);
+    Quad(4, 5, 6, 7);
+    Quad(5, 4, 0, 1);
+        
     SwapBuffers(MyDC);
 
-  
+    return;
+}
+
+void Quad(int a, int b, int c, int d)
+{
+    glBegin(GL_QUADS);
+    glColor3fv(colors[a]);
+    glVertex3fv(vertices[a]);
+    glColor3fv(colors[b]);
+    glVertex3fv(vertices[b]);
+    glColor3fv(colors[c]);
+    glVertex3fv(vertices[c]);
+    glColor3fv(colors[d]);
+    glVertex3fv(vertices[d]);
+    glEnd();
+
     return;
 }
