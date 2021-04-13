@@ -275,12 +275,16 @@ void Resize(int width, int height)
     glViewport(0, 0, width, height);
 
     if (width <= height)
-        glOrtho(-2.0, 2.0, -2.0 * (GLfloat)height / (GLfloat)width,
-            2.0 * (GLfloat)height / (GLfloat)width, 1.0, 10.0);
-    
+      //  glOrtho(-2.0, 2.0, -2.0 * (GLfloat)height / (GLfloat)width,
+     //       2.0 * (GLfloat)height / (GLfloat)width, 1.0, 10.0);
+          glFrustum(-2.0, 2.0, -2.0 * (GLfloat)height / (GLfloat)width,
+           2.0 * (GLfloat)height / (GLfloat)width, 1.0, 10.0);
+        
     else
-        glOrtho(-2.0 * (GLfloat)width / (GLfloat)height,
-            2.0 * (GLfloat)width / (GLfloat)height, -2.0, 2.0, 1.0, 10.0);
+       // glOrtho(-2.0 * (GLfloat)width / (GLfloat)height,
+         //   2.0 * (GLfloat)width / (GLfloat)height, -2.0, 2.0, 1.0, 10.0);
+       glFrustum(-2.0 * (GLfloat)width / (GLfloat)height,
+        2.0 * (GLfloat)width / (GLfloat)height, -2.0, 2.0, 1.0, 10.0);
               
     return;
 
