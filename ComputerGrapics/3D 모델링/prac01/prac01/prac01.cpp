@@ -25,6 +25,8 @@ void Resize(int width, int height);
 void DrawScene(HDC MyDC);
 
 GLfloat viewer[3] = { 2.0f,2.0f ,2.0f };
+
+
 //-----------------------------------------------------
 GLfloat vertices[8][3] = {
     { -1.0f, -1.0f,  1.0f }, { -1.0f,  1.0f,  1.0f },
@@ -38,6 +40,10 @@ GLfloat colors[8][3] = {
     { 1.0f, 1.0f, 0.0f }, { 1.0f, 0.0f, 0.0f } };
 
 void Quad(int a, int b, int c, int d);
+
+// shdow polgon
+GLfloat light_pos[3] = { -1.0f,10.0f ,-1.0f };
+void Quad_NC(int a, int b, int c, int d);
 //-----------------------------------------------------
 
 
@@ -305,17 +311,19 @@ void Resize(int width, int height)
 
     glViewport(0, 0, width, height);
 
-    if (width <= height)
+  //  if (width <= height)
         //  glOrtho(-2.0, 2.0, -2.0 * (GLfloat)height / (GLfloat)width,
        //       2.0 * (GLfloat)height / (GLfloat)width, 1.0, 10.0);
-            glFrustum(-2.0, 2.0, -2.0 * (GLfloat)height / (GLfloat)width,
-           2.0 * (GLfloat)height / (GLfloat)width, 1.0, 10.0);
+     //       glFrustum(-2.0, 2.0, -2.0 * (GLfloat)height / (GLfloat)width,
+       //    2.0 * (GLfloat)height / (GLfloat)width, 1.0, 10.0);
 
-     else
+  //   else
        //  glOrtho(-2.0 * (GLfloat)width / (GLfloat)height,
        //      2.0 * (GLfloat)width / (GLfloat)height, -2.0, 2.0, 1.0, 10.0);
-         glFrustum(-2.0 * (GLfloat)width / (GLfloat)height,
-          2.0 * (GLfloat)width / (GLfloat)height, -2.0, 2.0, 1.0, 10.0);
+     //    glFrustum(-2.0 * (GLfloat)width / (GLfloat)height,
+      //    2.0 * (GLfloat)width / (GLfloat)height, -2.0, 2.0, 1.0, 10.0);
+
+    gluPerspective(90, (GLdouble)width / (GLdouble)height, 1.0, 10000.0); //  gluPerspective 사용
 
       
     return;
@@ -369,8 +377,41 @@ void DrawScene(HDC MyDC)
     Quad(3, 0, 4, 7);
     Quad(4, 5, 6, 7);
     Quad(5, 4, 0, 1);
-        
+   
+    // shdow polygon
+    GLfloat m[16];
+    for (register int i = 0; i < 16; i++) m[i] = 0.0f;
+    m[0] = m[5] = m[10] = 1.0f;
+    m[7] = -1.0f / light_pos[1];
+
+    glPushMatrix(); // 집어 넣음
+   glTranslatef(0.0f, -1.5f, 0.0f); // 그림자 밑으로 내림
+    glTranslatef(light_pos[0], light_pos[1], light_pos[2]); // 원점으로 가거
+    glMultMatrixf(m); // 원점에서 투영 하고
+    glTranslatef(-light_pos[0], -light_pos[1], -light_pos[2]); // 다시 제자리로 돌아옴
+
+    glColor3f(0.5f, 0.5f, 0.5f ); // 회색
+    glBegin(GL_QUADS); // 호출
+    Quad_NC(0, 3, 2, 1);
+    Quad_NC(1, 2, 6, 5);
+    Quad_NC(2, 3, 7, 6);
+    Quad_NC(3, 0, 4, 7);
+    Quad_NC(4, 5, 6, 7);
+    Quad_NC(5, 4, 0, 1);
+    glEnd();
+    glPopMatrix(); // 저장
+   
     SwapBuffers(MyDC);
+
+    return;
+}
+
+void Quad_NC(int a, int b, int c, int d) // 왜 그림자 안나오는지 모르겠음. 
+{
+    glVertex3fv(vertices[a]);
+    glVertex3fv(vertices[b]);
+    glVertex3fv(vertices[c]);
+    glVertex3fv(vertices[d]);
 
     return;
 }
@@ -386,7 +427,9 @@ void Quad(int a, int b, int c, int d)
     glVertex3fv(vertices[c]);
     glColor3fv(colors[d]);
     glVertex3fv(vertices[d]);
-    glEnd();
+
+   
 
     return;
 }
+
