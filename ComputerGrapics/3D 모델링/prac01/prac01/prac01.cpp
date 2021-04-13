@@ -24,6 +24,7 @@ bool bSetupPixelFormat(HDC hdc);
 void Resize(int width, int height);
 void DrawScene(HDC MyDC);
 
+GLfloat viewer[3] = { 2.0f,2.0f ,2.0f };
 //-----------------------------------------------------
 GLfloat vertices[8][3] = {
     { -1.0f, -1.0f,  1.0f }, { -1.0f,  1.0f,  1.0f },
@@ -38,6 +39,7 @@ GLfloat colors[8][3] = {
 
 void Quad(int a, int b, int c, int d);
 //-----------------------------------------------------
+
 
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
@@ -204,6 +206,35 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             */
         }
         break;
+    case WM_KEYDOWN:
+        switch (wParam)
+        {
+        case VK_LEFT:
+            viewer[0] -= 0.5f;
+            break;
+        case VK_RIGHT:
+            viewer[0] += 0.5f;
+            break;
+        case VK_DOWN:
+            viewer[1] -= 0.5f;
+            break;
+        case VK_UP:
+            viewer[1] += 0.5f;
+            break;
+        case VK_PRIOR:
+            viewer[2] -= 0.5f;
+            break;
+        case VK_NEXT:
+            viewer[2] += 0.5f;
+            break;
+        case VK_ESCAPE:
+            DestroyWindow(hWnd);
+            break;
+        }
+
+        InvalidateRect(hWnd, NULL, true);
+        break;
+
     case WM_DESTROY:
         // Destroy all about OpenGL
         if (hRenderingContext)
@@ -275,17 +306,18 @@ void Resize(int width, int height)
     glViewport(0, 0, width, height);
 
     if (width <= height)
-      //  glOrtho(-2.0, 2.0, -2.0 * (GLfloat)height / (GLfloat)width,
-     //       2.0 * (GLfloat)height / (GLfloat)width, 1.0, 10.0);
-          glFrustum(-2.0, 2.0, -2.0 * (GLfloat)height / (GLfloat)width,
+        //  glOrtho(-2.0, 2.0, -2.0 * (GLfloat)height / (GLfloat)width,
+       //       2.0 * (GLfloat)height / (GLfloat)width, 1.0, 10.0);
+            glFrustum(-2.0, 2.0, -2.0 * (GLfloat)height / (GLfloat)width,
            2.0 * (GLfloat)height / (GLfloat)width, 1.0, 10.0);
-        
-    else
-       // glOrtho(-2.0 * (GLfloat)width / (GLfloat)height,
-         //   2.0 * (GLfloat)width / (GLfloat)height, -2.0, 2.0, 1.0, 10.0);
-       glFrustum(-2.0 * (GLfloat)width / (GLfloat)height,
-        2.0 * (GLfloat)width / (GLfloat)height, -2.0, 2.0, 1.0, 10.0);
-              
+
+     else
+       //  glOrtho(-2.0 * (GLfloat)width / (GLfloat)height,
+       //      2.0 * (GLfloat)width / (GLfloat)height, -2.0, 2.0, 1.0, 10.0);
+         glFrustum(-2.0 * (GLfloat)width / (GLfloat)height,
+          2.0 * (GLfloat)width / (GLfloat)height, -2.0, 2.0, 1.0, 10.0);
+
+      
     return;
 
 }
@@ -329,7 +361,7 @@ void DrawScene(HDC MyDC)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    gluLookAt(2.0, 2.0, 2.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    gluLookAt(viewer[0], viewer[1], viewer[2], 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     
     Quad(0, 3, 2, 1);
     Quad(1, 2, 6, 5);
