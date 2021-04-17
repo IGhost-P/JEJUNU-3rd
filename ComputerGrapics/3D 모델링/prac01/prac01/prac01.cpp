@@ -377,14 +377,14 @@ void DrawScene(HDC MyDC)
     glLoadIdentity();
 
     gluLookAt(viewer[0], viewer[1], viewer[2], 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-    
+
     Quad(0, 3, 2, 1);
     Quad(1, 2, 6, 5);
     Quad(2, 3, 7, 6);
     Quad(3, 0, 4, 7);
     Quad(4, 5, 6, 7);
     Quad(5, 4, 0, 1);
-   
+
     // shdow polygon
     GLfloat m[16];
     for (register int i = 0; i < 16; i++) m[i] = 0.0f;
@@ -392,11 +392,11 @@ void DrawScene(HDC MyDC)
     m[7] = -1.0f / light_pos[1];
 
     glPushMatrix(); // 집어 넣음
-   glTranslatef(0.0f, -1.5f, 0.0f); // 그림자 밑으로 내림
+    glTranslatef(0.0f, -1.5f, 0.0f); // 그림자 밑으로 내림
     glTranslatef(light_pos[0], light_pos[1], light_pos[2]); // 원점으로 가거
     glMultMatrixf(m); // 원점에서 투영 하고
     glTranslatef(-light_pos[0], -light_pos[1], -light_pos[2]); // 다시 제자리로 돌아옴
-
+ 
     glColor3f(0.5f, 0.5f, 0.5f ); // 회색
     glBegin(GL_QUADS); // 호출
     Quad_NC(0, 3, 2, 1);
@@ -413,7 +413,7 @@ void DrawScene(HDC MyDC)
     return;
 }
 
-void Quad_NC(int a, int b, int c, int d) // 왜 그림자 안나오는지 모르겠음. 
+void Quad_NC(int a, int b, int c, int d) // 왜 그림자 안나오는지 모르겠음. -> 나오긴 하는데 안보임
 {
     glVertex3fv(vertices[a]);
     glVertex3fv(vertices[b]);
@@ -434,7 +434,7 @@ void Quad(int a, int b, int c, int d)
     glVertex3fv(vertices[c]);
     glColor3fv(colors[d]);
     glVertex3fv(vertices[d]);
-
+    glEnd(); // 이거 안해줘서, 그림자가 안먹었던 거임 ㅠㅠㅠ 
    
 
     return;
