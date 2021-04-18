@@ -177,7 +177,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
         //Creat timer
-        SetTimer(hWnd, IDT_TIMER, 00, NULL);
+        SetTimer(hWnd, IDT_TIMER, 100, NULL);
 
         break;
 
@@ -255,8 +255,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         if (hDeviceContext)
             ReleaseDC(hWnd, hDeviceContext);
 
+        //Destroy & timer
+        KillTimer(hWnd, IDT_TIMER);
+
         PostQuitMessage(0);
         break;
+
+    case WM_TIMER:
+        if (wParam == IDT_TIMER)
+        {
+            theta += 2.0f;
+            if (theta > 360.0f)
+                theta -= 360.0f;
+                InvalidateRect(hWnd, NULL, true);
+        }
+        break;
+
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
@@ -377,6 +391,9 @@ void DrawScene(HDC MyDC)
     glLoadIdentity();
 
     gluLookAt(viewer[0], viewer[1], viewer[2], 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    
+    glRotatef(theta, 0.0f, 1.0f, 0.0f); // 카메라가 움직이네가 아닌, 물체가 움직임
+
 
     Quad(0, 3, 2, 1);
     Quad(1, 2, 6, 5);
