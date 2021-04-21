@@ -27,7 +27,7 @@ void DrawScene(HDC MyDC);
 
 GLfloat viewer[3] = { 2.0f,2.0f ,2.0f };
 //rotation 회전각도
-float theta = 0.0f;
+float theta = 0.0f; // THETA 추가했는데?
 
 //-----------------------------------------------------
 GLfloat vertices[8][3] = {
