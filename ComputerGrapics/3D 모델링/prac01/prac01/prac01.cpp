@@ -248,6 +248,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         InvalidateRect(hWnd, NULL, true);
         break;
 
+
     case WM_DESTROY:
         // Destroy all about OpenGL
         if (hRenderingContext)
@@ -408,14 +409,14 @@ void DrawScene(HDC MyDC)
     m[0] = m[5] = m[10] = 1.0f;
     m[7] = -1.0f / light_pos[1];
 
-    glPushMatrix(); // 집어 넣음
-    glTranslatef(0.0f, -1.5f, 0.0f); // 그림자 밑으로 내림
-    glTranslatef(light_pos[0], light_pos[1], light_pos[2]); // 원점으로 가거
-    glMultMatrixf(m); // 원점에서 투영 하고
-    glTranslatef(-light_pos[0], -light_pos[1], -light_pos[2]); // 다시 제자리로 돌아옴
+    glPushMatrix();
+    glTranslatef(0.0f, -1.5f, 0.0f); 
+    glTranslatef(light_pos[0], light_pos[1], light_pos[2]); 
+    glMultMatrixf(m);
+    glTranslatef(-light_pos[0], -light_pos[1], -light_pos[2]); 
  
-    glColor3f(0.5f, 0.5f, 0.5f ); // 회색
-    glBegin(GL_QUADS); // 호출
+    glColor3f(0.5f, 0.5f, 0.5f ); 
+    glBegin(GL_QUADS); 
     Quad_NC(0, 3, 2, 1);
     Quad_NC(1, 2, 6, 5);
     Quad_NC(2, 3, 7, 6);
@@ -430,7 +431,7 @@ void DrawScene(HDC MyDC)
     return;
 }
 
-void Quad_NC(int a, int b, int c, int d) // 왜 그림자 안나오는지 모르겠음. -> 나오긴 하는데 안보임
+void Quad_NC(int a, int b, int c, int d) 
 {
     glVertex3fv(vertices[a]);
     glVertex3fv(vertices[b]);
@@ -451,7 +452,7 @@ void Quad(int a, int b, int c, int d)
     glVertex3fv(vertices[c]);
     glColor3fv(colors[d]);
     glVertex3fv(vertices[d]);
-    glEnd(); // 이거 안해줘서, 그림자가 안먹었던 거임 ㅠㅠㅠ 
+    glEnd();  
    
 
     return;
