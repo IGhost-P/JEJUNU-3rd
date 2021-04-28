@@ -27,7 +27,7 @@ void DrawScene(HDC MyDC);
 
 GLfloat viewer[3] = { 2.0f,2.0f ,2.0f };
 //rotation 회전각도
-float theta = 0.0f;
+float theta = 0.0f; // THETA 추가했는데?
 
 //-----------------------------------------------------
 GLfloat vertices[8][3] = {
@@ -177,7 +177,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
         //Creat timer
-        SetTimer(hWnd, IDT_TIMER, 00, NULL);
+        SetTimer(hWnd, IDT_TIMER, 100, NULL);
 
         break;
 
@@ -248,6 +248,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         InvalidateRect(hWnd, NULL, true);
         break;
 
+
     case WM_DESTROY:
         // Destroy all about OpenGL
         if (hRenderingContext)
@@ -255,8 +256,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         if (hDeviceContext)
             ReleaseDC(hWnd, hDeviceContext);
 
+        //Destroy & timer
+        KillTimer(hWnd, IDT_TIMER);
+
         PostQuitMessage(0);
         break;
+
+    case WM_TIMER:
+        if (wParam == IDT_TIMER)
+        {
+            theta += 2.0f;
+            if (theta > 360.0f)
+                theta -= 360.0f;
+                InvalidateRect(hWnd, NULL, true);
+        }
+        break;
+
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
@@ -378,27 +393,30 @@ void DrawScene(HDC MyDC)
 
     gluLookAt(viewer[0], viewer[1], viewer[2], 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     
+    glRotatef(theta, 0.0f, 1.0f, 0.0f); // 카메라가 움직이네가 아닌, 물체가 움직임
+
+
     Quad(0, 3, 2, 1);
     Quad(1, 2, 6, 5);
     Quad(2, 3, 7, 6);
     Quad(3, 0, 4, 7);
     Quad(4, 5, 6, 7);
     Quad(5, 4, 0, 1);
-   
+
     // shdow polygon
     GLfloat m[16];
     for (register int i = 0; i < 16; i++) m[i] = 0.0f;
     m[0] = m[5] = m[10] = 1.0f;
     m[7] = -1.0f / light_pos[1];
 
-    glPushMatrix(); // 집어 넣음
-   glTranslatef(0.0f, -1.5f, 0.0f); // 그림자 밑으로 내림
-    glTranslatef(light_pos[0], light_pos[1], light_pos[2]); // 원점으로 가거
-    glMultMatrixf(m); // 원점에서 투영 하고
-    glTranslatef(-light_pos[0], -light_pos[1], -light_pos[2]); // 다시 제자리로 돌아옴
-
-    glColor3f(0.5f, 0.5f, 0.5f ); // 회색
-    glBegin(GL_QUADS); // 호출
+    glPushMatrix();
+    glTranslatef(0.0f, -1.5f, 0.0f); 
+    glTranslatef(light_pos[0], light_pos[1], light_pos[2]); 
+    glMultMatrixf(m);
+    glTranslatef(-light_pos[0], -light_pos[1], -light_pos[2]); 
+ 
+    glColor3f(0.5f, 0.5f, 0.5f ); 
+    glBegin(GL_QUADS); 
     Quad_NC(0, 3, 2, 1);
     Quad_NC(1, 2, 6, 5);
     Quad_NC(2, 3, 7, 6);
@@ -413,7 +431,7 @@ void DrawScene(HDC MyDC)
     return;
 }
 
-void Quad_NC(int a, int b, int c, int d) // 왜 그림자 안나오는지 모르겠음. 
+void Quad_NC(int a, int b, int c, int d) 
 {
     glVertex3fv(vertices[a]);
     glVertex3fv(vertices[b]);
@@ -434,7 +452,7 @@ void Quad(int a, int b, int c, int d)
     glVertex3fv(vertices[c]);
     glColor3fv(colors[d]);
     glVertex3fv(vertices[d]);
-
+    glEnd();  
    
 
     return;
