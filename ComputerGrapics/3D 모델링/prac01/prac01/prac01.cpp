@@ -392,7 +392,7 @@ void DrawScene(HDC MyDC)
     m[7] = -1.0f / light_pos[1];
 
     glPushMatrix(); // 집어 넣음
-   glTranslatef(0.0f, -1.5f, 0.0f); // 그림자 밑으로 내림
+    glTranslatef(0.0f, -1.5f, 0.0f); // 그림자 밑으로 내림
     glTranslatef(light_pos[0], light_pos[1], light_pos[2]); // 원점으로 가거
     glMultMatrixf(m); // 원점에서 투영 하고
     glTranslatef(-light_pos[0], -light_pos[1], -light_pos[2]); // 다시 제자리로 돌아옴
@@ -419,6 +419,8 @@ void Quad_NC(int a, int b, int c, int d) // 왜 그림자 안나오는지 모르
     glVertex3fv(vertices[b]);
     glVertex3fv(vertices[c]);
     glVertex3fv(vertices[d]);
+   
+
 
     return;
 }
@@ -434,7 +436,7 @@ void Quad(int a, int b, int c, int d)
     glVertex3fv(vertices[c]);
     glColor3fv(colors[d]);
     glVertex3fv(vertices[d]);
-
+    glEnd();
    
 
     return;
