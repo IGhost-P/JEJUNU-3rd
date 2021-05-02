@@ -407,7 +407,7 @@ void Resize(int width, int height)
 */
 void DrawScene(HDC MyDC)
 {
-    glEnable(GL_DEPTH_TEST); // 이거 빠지면 안된다-> 뒷 경계선 제거
+    glEnable(GL_DEPTH_TEST); // 뒷 경계선 제거
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
@@ -452,7 +452,7 @@ void DrawScene(HDC MyDC)
     return;
 }
 
-void Quad_NC(int a, int b, int c, int d) // 왜 그림자 안나오는지 모르겠음. 
+void Quad_NC(int a, int b, int c, int d) 
 {
     glVertex3fv(vertices[a]);
     glVertex3fv(vertices[b]);
