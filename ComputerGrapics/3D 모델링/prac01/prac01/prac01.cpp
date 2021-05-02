@@ -28,6 +28,9 @@ void DrawScene(HDC MyDC);
 GLfloat viewer[3] = { 2.0f,2.0f ,2.0f };
 //rotation 회전각도
 float theta = 0.0f;
+float theta = 0.0f; 
+float rotation = 2.0;// theta에 적용할 회전 각도를 초기화 한다.
+float rotationDirection[3] = { 0.0f, 1.0f, 0.0f }; // 각 X,Y,Z축 회전을 초기화 한다.
 
 //-----------------------------------------------------
 GLfloat vertices[8][3] = {
@@ -248,6 +251,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         InvalidateRect(hWnd, NULL, true);
         break;
 
+
+    case WM_LBUTTONDOWN: // 왼클릭 이벤트시 콜백 함수 실행
+        rotation *= -1;
+        break;
+
+
     case WM_DESTROY:
         // Destroy all about OpenGL
         if (hRenderingContext)
@@ -257,6 +266,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         PostQuitMessage(0);
         break;
+
+    case WM_TIMER:
+        if (wParam == IDT_TIMER)
+        {
+            theta += 2.0f;
+            if (theta > 360.0f)
+                theta -= 360.0f;
+                InvalidateRect(hWnd, NULL, true);
+        }
+        break;
+
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
@@ -378,6 +398,8 @@ void DrawScene(HDC MyDC)
 
     gluLookAt(viewer[0], viewer[1], viewer[2], 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     
+    glRotatef(theta, 0.0f, 1.0f, 0.0f); // 카메라가 움직이네가 아닌, 물체가 움직임
+
     Quad(0, 3, 2, 1);
     Quad(1, 2, 6, 5);
     Quad(2, 3, 7, 6);
