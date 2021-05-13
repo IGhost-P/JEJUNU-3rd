@@ -23,6 +23,8 @@ HGLRC hRenderingContext;						// current rendering context
 bool bSetupPixelFormat(HDC hdc);
 void Resize(int width, int height);
 void DrawScene(HDC MyDC);
+
+float centerPos[2] = { 0.0f, 0.0f };
 /////////////////////////////
 
 
