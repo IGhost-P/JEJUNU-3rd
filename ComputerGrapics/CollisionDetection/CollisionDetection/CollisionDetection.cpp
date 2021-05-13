@@ -198,8 +198,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         PostQuitMessage(0);
         break;
-    
     case WM_KEYDOWN:
+        if (wParam == VK_LEFT) {
+            centerPos[0] -= 0.2f;
+            InvalidateRect(hWnd, NULL, false);
+        }
+        else if (wParam == VK_RIGHT) {
+            centerPos[0] += 0.2f;
+            InvalidateRect(hWnd, NULL, false);
+        }
+        break;
 
         if (wParam == VK_ESCAPE) {
 
@@ -292,11 +300,17 @@ void DrawScene(HDC MyDC)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    glColor3f(0.0f, 1.0f, 0.0f);
-    glRectf(-0.1f, -0.1f, 0.1f, 0.1f);
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glRectf(centerPos[0] - 0.1f, centerPos[1] - 0.1f, centerPos[0] + 0.1f, centerPos[1] + 0.1f);
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+    glColor3f(1.0f, 1.0f, 0.0f);
+    glRectf(centerPos[0] - 0.1f, centerPos[1] - 0.1f, centerPos[0] + 0.1f, centerPos[1] + 0.1f);
 
     SwapBuffers(MyDC);
-
     return;
 }
