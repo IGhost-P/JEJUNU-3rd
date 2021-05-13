@@ -25,6 +25,7 @@ void Resize(int width, int height);
 void DrawScene(HDC MyDC);
 
 float centerPos[2] = { 0.0f, 0.0f };
+bool DoColide(float cneterX, float centerY);
 /////////////////////////////
 
 
@@ -200,12 +201,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_KEYDOWN:
         if (wParam == VK_LEFT) {
-            centerPos[0] -= 0.2f;
-            InvalidateRect(hWnd, NULL, false);
+            if (!DoColide(centerPos[0] - 0.2f, centerPos[1])) {
+                centerPos[0] -= 0.2f;
+                InvalidateRect(hWnd, NULL, false);
+            }
         }
         else if (wParam == VK_RIGHT) {
-            centerPos[0] += 0.2f;
-            InvalidateRect(hWnd, NULL, false);
+            if (!DoColide(centerPos[0] + 0.2f, centerPos[1])) {
+                centerPos[0] += 0.2f;
+                InvalidateRect(hWnd, NULL, false);
+            }
+        }
+        else if (wParam == VK_UP) {
+            if (!DoColide(centerPos[0], centerPos[1] + 0.2f)) {
+                centerPos[1] += 0.2f;
+                InvalidateRect(hWnd, NULL, false);
+            }
+        }
+        else if (wParam == VK_DOWN) {
+            if (!DoColide(centerPos[0], centerPos[1] - 0.2f)) {
+                centerPos[1] -= 0.2f;
+                InvalidateRect(hWnd, NULL, false);
+            }
         }
         break;
 
@@ -310,7 +327,17 @@ void DrawScene(HDC MyDC)
 
     glColor3f(1.0f, 1.0f, 0.0f);
     glRectf(centerPos[0] - 0.1f, centerPos[1] - 0.1f, centerPos[0] + 0.1f, centerPos[1] + 0.1f);
+    
+    glColor3f(1.0f, 1.0f, 0.5f);
+    glRecti(-1.0f, -1.0f, 1.0f, 1.0f);
 
     SwapBuffers(MyDC);
     return;
+}
+
+bool DoColide(float centerX, float centerY)
+{
+    if (centerX >= 1.0f || centerY >= 1.0f || centerX <= -1.0f || centerY <= -1.0f)
+        return true;
+    return false;
 }
