@@ -9,7 +9,7 @@
 #include <glu.h>
 
 #define MAX_LOADSTRING 100
-
+#define IDT_TIMER 1
 // 전역 변수:
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
@@ -25,7 +25,9 @@ void Resize(int width, int height);
 void DrawScene(HDC MyDC);
 
 float centerPos[2] = { 0.0f, 0.0f };
-bool DoColide(float cneterX, float centerY);
+bool DoColide(float centerX, float centerY);
+bool DoColide(float left, float bottom, float right, float top);
+float moveDirection[2] = { 0.05f, 0.0f };
 /////////////////////////////
 
 
@@ -154,7 +156,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         hRenderingContext = wglCreateContext(hDeviceContext);
         wglMakeCurrent(hDeviceContext, hRenderingContext);
-
+        SetTimer(hWnd, IDT_TIMER, 100, NULL); 
         break;
 /*
     case WM_COMMAND:
@@ -231,6 +233,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             DestroyWindow(hWnd);
         }
         break;
+    case WM_TIMER:
+        switch (wParam){
+        case IDT_TIMER:
+                float centerX = centerPos[0] + moveDirection[0];
+                float centerY = centerPos[1] + moveDirection[1];
+
+                if (!DoColide(centerX - 0.1f, centerY - 0.1f, centerX + 0.1f, centerY + 0.1f)) {
+                    centerPos[0] += moveDirection[0];
+                    centerPos[1] += moveDirection[1];
+                    InvalidateRect(hWnd, NULL, false);
+                }
+                InvalidateRect(hWnd, NULL, false);
+                break;
+        
+            break;
+        }
 
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
@@ -339,5 +357,13 @@ bool DoColide(float centerX, float centerY)
 {
     if (centerX >= 1.0f || centerY >= 1.0f || centerX <= -1.0f || centerY <= -1.0f)
         return true;
+    return false;
+}
+bool DoColide(float left, float bottom, float right, float top)
+{
+    float bound = 1.00001f;
+    if (left < -bound || right > bound || bottom < -bound || top > bound) {
+        return true;
+    }
     return false;
 }
