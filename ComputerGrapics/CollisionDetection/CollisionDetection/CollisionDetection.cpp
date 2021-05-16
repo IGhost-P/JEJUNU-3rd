@@ -25,9 +25,10 @@ void Resize(int width, int height);
 void DrawScene(HDC MyDC);
 
 float centerPos[2] = { 0.0f, 0.0f };
+float centerPos2[2] = { 0.0f, 0.0f };
 bool DoColide(float centerX, float centerY);
 bool DoColide(float left, float bottom, float right, float top);
-float moveDirection[2] = { 0.00f, 0.05f };
+float moveDirection[2] = { 0.05f, 0.00f };
 /////////////////////////////
 
 
@@ -238,10 +239,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case IDT_TIMER:
                 float centerX = centerPos[0] + moveDirection[0];
                 float centerY = centerPos[1] + moveDirection[1];
-
+                
+               
                 if (!DoColide(centerX - 0.1f, centerY - 0.1f, centerX + 0.1f, centerY + 0.1f)) {
                     centerPos[0] += moveDirection[0];
                     centerPos[1] += moveDirection[1];
+                    centerPos2[0] += moveDirection[1];
+                    centerPos2[1] += moveDirection[0];
                     InvalidateRect(hWnd, NULL, false);
                 }
                 InvalidateRect(hWnd, NULL, false);
@@ -335,9 +339,10 @@ void DrawScene(HDC MyDC)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    
+    //---------------- 상자 1--------------------//
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+  
     glColor3f(0.0f, 0.0f, 0.0f);
     glRectf(centerPos[0] - 0.1f, centerPos[1] - 0.1f, centerPos[0] + 0.1f, centerPos[1] + 0.1f);
 
@@ -345,6 +350,17 @@ void DrawScene(HDC MyDC)
 
     glColor3f(1.0f, 1.0f, 0.0f);
     glRectf(centerPos[0] - 0.1f, centerPos[1] - 0.1f, centerPos[0] + 0.1f, centerPos[1] + 0.1f);
+
+    //---------------- 상자 2--------------------//
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glRectf(centerPos2[0] - 0.1f, centerPos2[1] - 0.1f, centerPos2[0] + 0.1f, centerPos2[1] + 0.1f);
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+    glColor3f(1.0f, 0.0f, 0.5f);
+    glRectf(centerPos2[0] - 0.1f, centerPos2[1] - 0.1f, centerPos2[0] + 0.1f, centerPos2[1] + 0.1f);
     
     glColor3f(1.0f, 1.0f, 0.5f);
     glRecti(-1.0f, -1.0f, 1.0f, 1.0f);
