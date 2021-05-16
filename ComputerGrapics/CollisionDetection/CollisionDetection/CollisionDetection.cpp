@@ -362,8 +362,12 @@ bool DoColide(float centerX, float centerY)
 bool DoColide(float left, float bottom, float right, float top)
 {
     float bound = 1.00001f;
-    if (left < -bound || right > bound || bottom < -bound || top > bound) {
+    if (left < -bound || right > bound ){
+        moveDirection[0] = -moveDirection[0];
         return true;
+    }
+    else if(bottom < -bound || top > bound){
+        moveDirection[1] = -moveDirection[1]; 
     }
     return false;
 }
