@@ -27,7 +27,7 @@ void DrawScene(HDC MyDC);
 float centerPos[2] = { 0.0f, 0.0f };
 bool DoColide(float centerX, float centerY);
 bool DoColide(float left, float bottom, float right, float top);
-float moveDirection[2] = { 0.05f, 0.0f };
+float moveDirection[2] = { 0.00f, 0.05f };
 /////////////////////////////
 
 
