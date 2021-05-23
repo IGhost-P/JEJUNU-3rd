@@ -7,62 +7,55 @@
 #include "prac01.h"
 #include "gl.h"
 #include "glu.h"
-
+#include "time.h"
 
 #define MAX_LOADSTRING 100
 #define IDT_TIMER 1 // 타이머 설정
 
 // 전역 변수:
-HINSTANCE hInst;                                // 현재 인스턴스입니다.
-WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
-WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
+HINSTANCE hInst;                     // 현재 인스턴스입니다.
+WCHAR szTitle[MAX_LOADSTRING];       // 제목 표시줄 텍스트입니다.
+WCHAR szWindowClass[MAX_LOADSTRING]; // 기본 창 클래스 이름입니다.
 
 /////////////////////// sk
-HDC hDeviceContext;								// current device context
-HGLRC hRenderingContext;						// current rendering context
+HDC hDeviceContext;      // current device context
+HGLRC hRenderingContext; // current rendering context
 
 bool bSetupPixelFormat(HDC hdc);
 void Resize(int width, int height);
 void DrawScene(HDC MyDC);
 
-GLfloat viewer[3] = { 2.0f,2.0f ,2.0f };
-//rotation 회전각도
+GLfloat viewer[3] = {2.0f, 2.0f, 2.0f};
+
 
 float theta = 0.0f; 
 float rotation = 2.0;// theta에 적용할 회전 각도를 초기화 한다.
 float rotationDirection[3] = { 0.0f, 1.0f, 0.0f }; // 각 X,Y,Z축 회전을 초기화 한다.
 
+
 //-----------------------------------------------------
 GLfloat vertices[8][3] = {
-    { -1.0f, -1.0f,  1.0f }, { -1.0f,  1.0f,  1.0f },
-    {  1.0f,  1.0f,  1.0f }, {  1.0f, -1.0f,  1.0f },
-    { -1.0f, -1.0f, -1.0f }, { -1.0f,  1.0f, -1.0f },
-    {  1.0f,  1.0f, -1.0f }, {  1.0f, -1.0f, -1.0f } };
+    {-1.0f, -1.0f, 1.0f}, {-1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, -1.0f, 1.0f}, {-1.0f, -1.0f, -1.0f}, {-1.0f, 1.0f, -1.0f}, {1.0f, 1.0f, -1.0f}, {1.0f, -1.0f, -1.0f}};
 GLfloat colors[8][3] = {
-    { 0.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 1.0f },
-    { 1.0f, 1.0f, 1.0f }, { 1.0f, 0.0f, 1.0f },
-    { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f },
-    { 1.0f, 1.0f, 0.0f }, { 1.0f, 0.0f, 0.0f } };
+    {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f}};
 
 void Quad(int a, int b, int c, int d);
 
 // shdow polgon
-GLfloat light_pos[3] = { -1.0f,10.0f ,-1.0f };
+GLfloat light_pos[3] = {-1.0f, 10.0f, -1.0f};
 void Quad_NC(int a, int b, int c, int d);
 //-----------------------------------------------------
 
-
-
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
-ATOM                MyRegisterClass(HINSTANCE hInstance);
-BOOL                InitInstance(HINSTANCE, int);
-LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+ATOM MyRegisterClass(HINSTANCE hInstance);
+BOOL InitInstance(HINSTANCE, int);
+LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+INT_PTR CALLBACK About(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-                     _In_opt_ HINSTANCE hPrevInstance,
-                     _In_ LPWSTR    lpCmdLine,
-                     _In_ int       nCmdShow)
+                      _In_opt_ HINSTANCE hPrevInstance,
+                      _In_ LPWSTR lpCmdLine,
+                      _In_ int nCmdShow)
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
@@ -75,7 +68,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MyRegisterClass(hInstance);
 
     // 애플리케이션 초기화를 수행합니다:
-    if (!InitInstance (hInstance, nCmdShow))
+    if (!InitInstance(hInstance, nCmdShow))
     {
         return FALSE;
     }
@@ -94,10 +87,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
     }
 
-    return (int) msg.wParam;
+    return (int)msg.wParam;
 }
-
-
 
 //
 //  함수: MyRegisterClass()
@@ -110,17 +101,17 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
-    wcex.style          = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc    = WndProc;
-    wcex.cbClsExtra     = 0;
-    wcex.cbWndExtra     = 0;
-    wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_PRAC01));
-    wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
-    wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
+    wcex.style = CS_HREDRAW | CS_VREDRAW;
+    wcex.lpfnWndProc = WndProc;
+    wcex.cbClsExtra = 0;
+    wcex.cbWndExtra = 0;
+    wcex.hInstance = hInstance;
+    wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_PRAC01));
+    wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
+    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
     wcex.lpszMenuName = NULL; // MAKEINTRESOURCEW(IDC_PRAC01);
-    wcex.lpszClassName  = szWindowClass;
-    wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
+    wcex.lpszClassName = szWindowClass;
+    wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
     return RegisterClassExW(&wcex);
 }
@@ -137,20 +128,20 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
+    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, 800, 600, nullptr, nullptr, hInstance, nullptr);
+    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+                              CW_USEDEFAULT, 0, 800, 600, nullptr, nullptr, hInstance, nullptr);
 
-   if (!hWnd)
-   {
-      return FALSE;
-   }
+    if (!hWnd)
+    {
+        return FALSE;
+    }
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
+    ShowWindow(hWnd, nCmdShow);
+    UpdateWindow(hWnd);
 
-   return TRUE;
+    return TRUE;
 }
 
 //
@@ -171,7 +162,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_CREATE:
         // Initialize for the OpenGL rendering
         hDeviceContext = GetDC(hWnd);
-        if (!bSetupPixelFormat(hDeviceContext)) {
+        if (!bSetupPixelFormat(hDeviceContext))
+        {
             MessageBox(hWnd, "Error in setting up pixel format for OpenGL", "Error", MB_OK | MB_ICONERROR);
             DestroyWindow(hWnd);
         }
@@ -180,7 +172,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         
 
         //Creat timer
-        SetTimer(hWnd, IDT_TIMER, 00, NULL);
+        SetTimer(hWnd, IDT_TIMER, 100, NULL);
 
         break;
 
@@ -210,18 +202,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
         */
     case WM_PAINT:
-        {
+    {
         DrawScene(hDeviceContext);
         ValidateRect(hWnd, NULL);
-      
+
         /*
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
             EndPaint(hWnd, &ps);
             */
-        }
-        break;
+    }
+    break;
     case WM_KEYDOWN:
         switch (wParam)
         {
@@ -281,15 +273,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         if (hDeviceContext)
             ReleaseDC(hWnd, hDeviceContext);
 
+        //Destroy & timer
+        KillTimer(hWnd, IDT_TIMER);
+
         PostQuitMessage(0);
         break;
 
     case WM_TIMER:
         if (wParam == IDT_TIMER)
         {
+
             theta += rotation; // 초기화한 회전 각도로 움직인다.
             if (theta > 360.0f) theta -= 360.0f;
             InvalidateRect(hWnd, NULL, true);
+
 
         }
         break;
@@ -335,12 +332,14 @@ bool bSetupPixelFormat(HDC hdc)
     pfd.cAccumBits = 0;
     pfd.cStencilBits = 0;
 
-    if ((pixelformat = ChoosePixelFormat(hdc, &pfd)) == 0) {
+    if ((pixelformat = ChoosePixelFormat(hdc, &pfd)) == 0)
+    {
         MessageBox(NULL, "ChoosePixelFormat() failed!!!", "Error", MB_OK | MB_ICONERROR);
         return false;
     }
 
-    if (SetPixelFormat(hdc, pixelformat, &pfd) == false) {
+    if (SetPixelFormat(hdc, pixelformat, &pfd) == false)
+    {
         MessageBox(NULL, "SetPixelFormat() failed!!!", "Error", MB_OK | MB_ICONERROR);
         return false;
     }
@@ -355,23 +354,21 @@ void Resize(int width, int height)
 
     glViewport(0, 0, width, height);
 
-  //  if (width <= height)
-        //  glOrtho(-2.0, 2.0, -2.0 * (GLfloat)height / (GLfloat)width,
-       //       2.0 * (GLfloat)height / (GLfloat)width, 1.0, 10.0);
-     //       glFrustum(-2.0, 2.0, -2.0 * (GLfloat)height / (GLfloat)width,
-       //    2.0 * (GLfloat)height / (GLfloat)width, 1.0, 10.0);
+    //  if (width <= height)
+    //  glOrtho(-2.0, 2.0, -2.0 * (GLfloat)height / (GLfloat)width,
+    //       2.0 * (GLfloat)height / (GLfloat)width, 1.0, 10.0);
+    //       glFrustum(-2.0, 2.0, -2.0 * (GLfloat)height / (GLfloat)width,
+    //    2.0 * (GLfloat)height / (GLfloat)width, 1.0, 10.0);
 
-  //   else
-       //  glOrtho(-2.0 * (GLfloat)width / (GLfloat)height,
-       //      2.0 * (GLfloat)width / (GLfloat)height, -2.0, 2.0, 1.0, 10.0);
-     //    glFrustum(-2.0 * (GLfloat)width / (GLfloat)height,
-      //    2.0 * (GLfloat)width / (GLfloat)height, -2.0, 2.0, 1.0, 10.0);
+    //   else
+    //  glOrtho(-2.0 * (GLfloat)width / (GLfloat)height,
+    //      2.0 * (GLfloat)width / (GLfloat)height, -2.0, 2.0, 1.0, 10.0);
+    //    glFrustum(-2.0 * (GLfloat)width / (GLfloat)height,
+    //    2.0 * (GLfloat)width / (GLfloat)height, -2.0, 2.0, 1.0, 10.0);
 
     gluPerspective(90, (GLdouble)width / (GLdouble)height, 1.0, 10000.0); //  gluPerspective 사용
 
-      
     return;
-
 }
 
 /*
@@ -389,7 +386,7 @@ void Resize(int width, int height)
 
 */
 
-    /*
+/*
     // 3D orthographic viewing
     if (width <= height) {
         double aspectHeight = height / (GLdouble)width;
@@ -400,7 +397,6 @@ void Resize(int width, int height)
         glOrtho(-aspectWidth, aspectWidth, -1, 1, -1, 1);
     }
     */
-    
 
 /*
 * DrawScene : to draw a scene
@@ -414,30 +410,33 @@ void DrawScene(HDC MyDC)
     glLoadIdentity();
 
     gluLookAt(viewer[0], viewer[1], viewer[2], 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+
     
    // glRotatef(theta, 0.0f, 1.0f, 0.0f); // 카메라가 움직이네가 아닌, 물체가 움직임
     glRotatef(theta, rotationDirection[0], rotationDirection[1], rotationDirection[2]); // 물체의 움직임 각도를 설정한 각도대로 물체가 움직인다.
+
     Quad(0, 3, 2, 1);
     Quad(1, 2, 6, 5);
     Quad(2, 3, 7, 6);
     Quad(3, 0, 4, 7);
     Quad(4, 5, 6, 7);
     Quad(5, 4, 0, 1);
-   
+
     // shdow polygon
     GLfloat m[16];
-    for (register int i = 0; i < 16; i++) m[i] = 0.0f;
+    for (register int i = 0; i < 16; i++)
+        m[i] = 0.0f;
     m[0] = m[5] = m[10] = 1.0f;
     m[7] = -1.0f / light_pos[1];
 
-    glPushMatrix(); // 집어 넣음
-    glTranslatef(0.0f, -1.5f, 0.0f); // 그림자 밑으로 내림
-    glTranslatef(light_pos[0], light_pos[1], light_pos[2]); // 원점으로 가거
-    glMultMatrixf(m); // 원점에서 투영 하고
-    glTranslatef(-light_pos[0], -light_pos[1], -light_pos[2]); // 다시 제자리로 돌아옴
+    glPushMatrix();
+    glTranslatef(0.0f, -1.5f, 0.0f);
+    glTranslatef(light_pos[0], light_pos[1], light_pos[2]);
+    glMultMatrixf(m);
+    glTranslatef(-light_pos[0], -light_pos[1], -light_pos[2]);
 
-    glColor3f(0.5f, 0.5f, 0.5f ); // 회색
-    glBegin(GL_QUADS); // 호출
+    glColor3f(0.5f, 0.5f, 0.5f);
+    glBegin(GL_QUADS);
     Quad_NC(0, 3, 2, 1);
     Quad_NC(1, 2, 6, 5);
     Quad_NC(2, 3, 7, 6);
@@ -446,20 +445,20 @@ void DrawScene(HDC MyDC)
     Quad_NC(5, 4, 0, 1);
     glEnd();
     glPopMatrix(); // 저장
-   
+
     SwapBuffers(MyDC);
 
     return;
 }
 
+
 void Quad_NC(int a, int b, int c, int d) 
+
 {
     glVertex3fv(vertices[a]);
     glVertex3fv(vertices[b]);
     glVertex3fv(vertices[c]);
     glVertex3fv(vertices[d]);
-   
-
 
     return;
 }
@@ -476,8 +475,6 @@ void Quad(int a, int b, int c, int d)
     glColor3fv(colors[d]);
     glVertex3fv(vertices[d]);
     glEnd();
-   
 
     return;
 }
-
