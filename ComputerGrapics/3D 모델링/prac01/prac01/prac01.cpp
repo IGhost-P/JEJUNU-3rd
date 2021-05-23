@@ -26,8 +26,12 @@ void Resize(int width, int height);
 void DrawScene(HDC MyDC);
 
 GLfloat viewer[3] = {2.0f, 2.0f, 2.0f};
-//rotation 회전각도
-float theta = 0.0f; // THETA 추가했는데?
+
+
+float theta = 0.0f; 
+float rotation = 2.0;// theta에 적용할 회전 각도를 초기화 한다.
+float rotationDirection[3] = { 0.0f, 1.0f, 0.0f }; // 각 X,Y,Z축 회전을 초기화 한다.
+
 
 //-----------------------------------------------------
 GLfloat vertices[8][3] = {
@@ -165,7 +169,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         hRenderingContext = wglCreateContext(hDeviceContext);
         wglMakeCurrent(hDeviceContext, hRenderingContext);
-        break;
+        
 
         //Creat timer
         SetTimer(hWnd, IDT_TIMER, 100, NULL);
@@ -239,6 +243,29 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         InvalidateRect(hWnd, NULL, true);
         break;
 
+    case WM_CHAR:// x,y,z라는 문자열 입력시 콜백 함수 실행
+        if (wParam == 'x') {
+            rotationDirection[0] = 1.0f;
+            rotationDirection[1] = 0.0f;
+            rotationDirection[2] = 0.0f;
+        }
+        else if (wParam == 'y') {
+            rotationDirection[0] = 0.0f;
+            rotationDirection[1] = 1.0f;
+            rotationDirection[2] = 0.0f;
+        }
+        else if (wParam == 'z') {
+            rotationDirection[0] = 0.0f;
+            rotationDirection[1] = 0.0f;
+            rotationDirection[2] = 1.0f;
+        }
+        break;
+    
+    case WM_LBUTTONDOWN: // 왼클릭 이벤트시 콜백 함수 실행
+        rotation *= -1;
+        break;
+
+
     case WM_DESTROY:
         // Destroy all about OpenGL
         if (hRenderingContext)
@@ -255,12 +282,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_TIMER:
         if (wParam == IDT_TIMER)
         {
-            theta += 2.0f;
-            if (theta > 360.0f)
-            {
-                theta -= 360.0f;
-                InvalidateRect(hWnd, NULL, true);
-            }
+
+            theta += rotation; // 초기화한 회전 각도로 움직인다.
+            if (theta > 360.0f) theta -= 360.0f;
+            InvalidateRect(hWnd, NULL, true);
+
+
         }
         break;
 
@@ -376,7 +403,7 @@ void Resize(int width, int height)
 */
 void DrawScene(HDC MyDC)
 {
-    glEnable(GL_DEPTH_TEST); // 이거 빠지면 안된다-> 뒷 경계선 제거
+    glEnable(GL_DEPTH_TEST); // 뒷 경계선 제거
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
@@ -384,7 +411,9 @@ void DrawScene(HDC MyDC)
 
     gluLookAt(viewer[0], viewer[1], viewer[2], 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
-    glRotatef(theta, 0.0f, 1.0f, 0.0f); // 카메라가 움직이네가 아닌, 물체가 움직임
+    
+   // glRotatef(theta, 0.0f, 1.0f, 0.0f); // 카메라가 움직이네가 아닌, 물체가 움직임
+    glRotatef(theta, rotationDirection[0], rotationDirection[1], rotationDirection[2]); // 물체의 움직임 각도를 설정한 각도대로 물체가 움직인다.
 
     Quad(0, 3, 2, 1);
     Quad(1, 2, 6, 5);
@@ -422,7 +451,9 @@ void DrawScene(HDC MyDC)
     return;
 }
 
-void Quad_NC(int a, int b, int c, int d)
+
+void Quad_NC(int a, int b, int c, int d) 
+
 {
     glVertex3fv(vertices[a]);
     glVertex3fv(vertices[b]);
