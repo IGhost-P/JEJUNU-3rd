@@ -96,7 +96,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;glut32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -154,9 +154,11 @@
     <ClInclude Include="prac01.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="trackball.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="prac01.cpp" />
+    <ClCompile Include="trackball.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="prac01.rc" />

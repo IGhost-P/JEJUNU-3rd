@@ -1,61 +1,73 @@
 ﻿// prac01.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
-// 2021. 3. 23.
+// 2021. 4. 29.
 // Created by Soo-Kyun Kim
 
 #include "framework.h"
 #include "prac01.h"
 #include "gl.h"
 #include "glu.h"
-#include "time.h"
+#include "glut.h"
+#include <math.h>
 
 #define MAX_LOADSTRING 100
-#define IDT_TIMER 1 // 타이머 설정
+#define   IDT_TIMER   1
 
 // 전역 변수:
-HINSTANCE hInst;                     // 현재 인스턴스입니다.
-WCHAR szTitle[MAX_LOADSTRING];       // 제목 표시줄 텍스트입니다.
-WCHAR szWindowClass[MAX_LOADSTRING]; // 기본 창 클래스 이름입니다.
+HINSTANCE hInst;                                // 현재 인스턴스입니다.
+WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
+WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
 /////////////////////// sk
-HDC hDeviceContext;      // current device context
-HGLRC hRenderingContext; // current rendering context
+HDC hDeviceContext;                        // current device context
+HGLRC hRenderingContext;                  // current rendering context
+
+//-----------------------------------------------------
+     // virtual trackball
+#include "trackball.h"
+TrackBall trball;
+bool bLButtonDown = false;
+//-----------------------------------------------------
 
 bool bSetupPixelFormat(HDC hdc);
 void Resize(int width, int height);
 void DrawScene(HDC MyDC);
 
-GLfloat viewer[3] = {2.0f, 2.0f, 2.0f};
+GLUquadric* pObj; // 팔만듬
+void BaseArm(void);
+void LowerArm(void);
+void UpperArm(void);
 
-
-float theta = 0.0f; 
-float rotation = 2.0;// theta에 적용할 회전 각도를 초기화 한다.
-float rotationDirection[3] = { 0.0f, 1.0f, 0.0f }; // 각 X,Y,Z축 회전을 초기화 한다.
-
-
+GLfloat viewer[3] = { 2.0f, 2.0f, 2.0f };
+float baseAngle = 0.0f;
+float lowAngle = 0.0f;
+float upperAngle = 0.0f;
 //-----------------------------------------------------
 GLfloat vertices[8][3] = {
-    {-1.0f, -1.0f, 1.0f}, {-1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, -1.0f, 1.0f}, {-1.0f, -1.0f, -1.0f}, {-1.0f, 1.0f, -1.0f}, {1.0f, 1.0f, -1.0f}, {1.0f, -1.0f, -1.0f}};
+    { -1.0f, -1.0f,  1.0f }, { -1.0f,  1.0f,  1.0f },
+    {  1.0f,  1.0f,  1.0f }, {  1.0f, -1.0f,  1.0f },
+    { -1.0f, -1.0f, -1.0f }, { -1.0f,  1.0f, -1.0f },
+    {  1.0f,  1.0f, -1.0f }, {  1.0f, -1.0f, -1.0f } };
 GLfloat colors[8][3] = {
-    {0.0f, 0.0f, 1.0f}, {0.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f}};
+    { 0.0f, 0.0f, 1.0f }, { 0.0f, 1.0f, 1.0f },
+    { 1.0f, 1.0f, 1.0f }, { 1.0f, 0.0f, 1.0f },
+    { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f },
+    { 1.0f, 1.0f, 0.0f }, { 1.0f, 0.0f, 0.0f } };
 
 void Quad(int a, int b, int c, int d);
-
-// shdow polgon
-GLfloat light_pos[3] = {-1.0f, 10.0f, -1.0f};
-void Quad_NC(int a, int b, int c, int d);
 //-----------------------------------------------------
 
+
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
-ATOM MyRegisterClass(HINSTANCE hInstance);
-BOOL InitInstance(HINSTANCE, int);
-LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK About(HWND, UINT, WPARAM, LPARAM);
+ATOM                MyRegisterClass(HINSTANCE hInstance);
+BOOL                InitInstance(HINSTANCE, int);
+LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
+INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-                      _In_opt_ HINSTANCE hPrevInstance,
-                      _In_ LPWSTR lpCmdLine,
-                      _In_ int nCmdShow)
+    _In_opt_ HINSTANCE hPrevInstance,
+    _In_ LPWSTR    lpCmdLine,
+    _In_ int       nCmdShow)
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
@@ -89,6 +101,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     return (int)msg.wParam;
 }
+
+
 
 //
 //  함수: MyRegisterClass()
@@ -131,7 +145,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
 
     HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-                              CW_USEDEFAULT, 0, 800, 600, nullptr, nullptr, hInstance, nullptr);
+        CW_USEDEFAULT, 0, 800, 600, nullptr, nullptr, hInstance, nullptr);
 
     if (!hWnd)
     {
@@ -157,28 +171,36 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     RECT clientRect;
+
     switch (message)
     {
     case WM_CREATE:
         // Initialize for the OpenGL rendering
         hDeviceContext = GetDC(hWnd);
-        if (!bSetupPixelFormat(hDeviceContext))
-        {
+        if (!bSetupPixelFormat(hDeviceContext)) {
             MessageBox(hWnd, "Error in setting up pixel format for OpenGL", "Error", MB_OK | MB_ICONERROR);
             DestroyWindow(hWnd);
         }
         hRenderingContext = wglCreateContext(hDeviceContext);
         wglMakeCurrent(hDeviceContext, hRenderingContext);
-        
 
-        //Creat timer
-        SetTimer(hWnd, IDT_TIMER, 100, NULL);
+        // virtual trackball
+        trball.initialize();
+
+
+        //create a quadric object
+        pObj = gluNewQuadric();
+        gluQuadricDrawStyle(pObj, GLU_LINE);
 
         break;
 
     case WM_SIZE:
         GetClientRect(hWnd, &clientRect);
         Resize(clientRect.right, clientRect.bottom);
+
+        // virtual trackball
+        trball.resize(clientRect.right, clientRect.bottom);
+
         InvalidateRect(hWnd, NULL, false);
 
         break;
@@ -214,55 +236,53 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             */
     }
     break;
+
+
+
+    case WM_LBUTTONDOWN:
+        if (!bLButtonDown)
+        {
+            bLButtonDown = true;
+            trball.start((int)LOWORD(lParam), (int)HIWORD(lParam));
+        }
+        break;
+
+    case WM_LBUTTONUP:
+        bLButtonDown = false;
+        break;
+
+    case WM_MOUSEMOVE:
+        if (bLButtonDown)
+        {
+            trball.end((int)LOWORD(lParam), (int)HIWORD(lParam));
+            InvalidateRect(hWnd, NULL, true);
+        }
+        break;
+
     case WM_KEYDOWN:
         switch (wParam)
         {
         case VK_LEFT:
-            viewer[0] -= 0.5f;
+            baseAngle -= 0.5f;
             break;
         case VK_RIGHT:
-            viewer[0] += 0.5f;
+            baseAngle += 0.5f;
             break;
         case VK_DOWN:
-            viewer[1] -= 0.5f;
+            lowAngle -= 0.5f;
             break;
         case VK_UP:
-            viewer[1] += 0.5f;
+            lowAngle += 0.5f;
             break;
-        case VK_PRIOR:
-            viewer[2] -= 0.5f;
-            break;
-        case VK_NEXT:
-            viewer[2] += 0.5f;
+        case VK_HOME:
+            upperAngle += 0.5f;
             break;
         case VK_ESCAPE:
-            DestroyWindow(hWnd);
+            upperAngle -= 0.5f;
             break;
         }
 
         InvalidateRect(hWnd, NULL, true);
-        break;
-
-    case WM_CHAR:// x,y,z라는 문자열 입력시 콜백 함수 실행
-        if (wParam == 'x') {
-            rotationDirection[0] = 1.0f;
-            rotationDirection[1] = 0.0f;
-            rotationDirection[2] = 0.0f;
-        }
-        else if (wParam == 'y') {
-            rotationDirection[0] = 0.0f;
-            rotationDirection[1] = 1.0f;
-            rotationDirection[2] = 0.0f;
-        }
-        else if (wParam == 'z') {
-            rotationDirection[0] = 0.0f;
-            rotationDirection[1] = 0.0f;
-            rotationDirection[2] = 1.0f;
-        }
-        break;
-    
-    case WM_LBUTTONDOWN: // 왼클릭 이벤트시 콜백 함수 실행
-        rotation *= -1;
         break;
 
 
@@ -273,23 +293,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         if (hDeviceContext)
             ReleaseDC(hWnd, hDeviceContext);
 
-        //Destroy & timer
+        // delete a quadric object
+        gluDeleteQuadric(pObj);
+
+        // Destroy a timer
         KillTimer(hWnd, IDT_TIMER);
 
         PostQuitMessage(0);
         break;
 
-    case WM_TIMER:
-        if (wParam == IDT_TIMER)
-        {
-
-            theta += rotation; // 초기화한 회전 각도로 움직인다.
-            if (theta > 360.0f) theta -= 360.0f;
-            InvalidateRect(hWnd, NULL, true);
-
-
-        }
-        break;
 
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
@@ -332,14 +344,12 @@ bool bSetupPixelFormat(HDC hdc)
     pfd.cAccumBits = 0;
     pfd.cStencilBits = 0;
 
-    if ((pixelformat = ChoosePixelFormat(hdc, &pfd)) == 0)
-    {
+    if ((pixelformat = ChoosePixelFormat(hdc, &pfd)) == 0) {
         MessageBox(NULL, "ChoosePixelFormat() failed!!!", "Error", MB_OK | MB_ICONERROR);
         return false;
     }
 
-    if (SetPixelFormat(hdc, pixelformat, &pfd) == false)
-    {
+    if (SetPixelFormat(hdc, pixelformat, &pfd) == false) {
         MessageBox(NULL, "SetPixelFormat() failed!!!", "Error", MB_OK | MB_ICONERROR);
         return false;
     }
@@ -354,127 +364,86 @@ void Resize(int width, int height)
 
     glViewport(0, 0, width, height);
 
-    //  if (width <= height)
-    //  glOrtho(-2.0, 2.0, -2.0 * (GLfloat)height / (GLfloat)width,
-    //       2.0 * (GLfloat)height / (GLfloat)width, 1.0, 10.0);
-    //       glFrustum(-2.0, 2.0, -2.0 * (GLfloat)height / (GLfloat)width,
-    //    2.0 * (GLfloat)height / (GLfloat)width, 1.0, 10.0);
+    float cx = width;
+    float cy = height;
 
-    //   else
-    //  glOrtho(-2.0 * (GLfloat)width / (GLfloat)height,
-    //      2.0 * (GLfloat)width / (GLfloat)height, -2.0, 2.0, 1.0, 10.0);
-    //    glFrustum(-2.0 * (GLfloat)width / (GLfloat)height,
-    //    2.0 * (GLfloat)width / (GLfloat)height, -2.0, 2.0, 1.0, 10.0);
+    if (cx <= cy)
+        glOrtho(-2.0, 2.0, -2.0 * (GLfloat)cy / (GLfloat)cx, 2.0 * (GLfloat)cy / (GLfloat)cx, 1.0, 10.0);
+    else
+        glOrtho(-2.0 * (GLfloat)cy / (GLfloat)cx, 2.0 * (GLfloat)cy / (GLfloat)cx, -2.0, 2.0, 1.0, 10.0);
 
-    gluPerspective(90, (GLdouble)width / (GLdouble)height, 1.0, 10000.0); //  gluPerspective 사용
+
+
 
     return;
+
 }
 
-/*
-  if (width <= height)
-        glOrtho(-2.0, 2.0, -2.0 * (GLfloat)height / (GLfloat)width,
-            2.0 * (GLfloat)height / (GLfloat)width, -2.0, 2.0);
-    //		glFrustum( -2.0, 2.0, -2.0*(GLfloat)cy/(GLfloat)cx,
-    //		                     2.0*(GLfloat)cy/(GLfloat)cx, 1.0, 10.0 );
-    else
-        glOrtho(-2.0 * (GLfloat)width / (GLfloat)height,
-            2.0 * (GLfloat)width / (GLfloat)height, -2.0, 2.0, -2.0, 2.0);
-
-    //		glFrustum( -2.0*(GLfloat)cx/(GLfloat)cy,
-    //		          2.0*(GLfloat)cx/(GLfloat)cy, -2.0, 2.0, 1.0, 10.0 );
-
-*/
-
-/*
-    // 3D orthographic viewing
-    if (width <= height) {
-        double aspectHeight = height / (GLdouble)width;
-        glOrtho(-1, 1, -aspectHeight, aspectHeight, -1, 1);
-    }
-    else {
-        double aspectWidth = width / (GLdouble)height;
-        glOrtho(-aspectWidth, aspectWidth, -1, 1, -1, 1);
-    }
-    */
 
 /*
 * DrawScene : to draw a scene
 */
 void DrawScene(HDC MyDC)
 {
-    glEnable(GL_DEPTH_TEST); // 뒷 경계선 제거
+    glEnable(GL_DEPTH_TEST);
+
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    gluLookAt(viewer[0], viewer[1], viewer[2], 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    gluLookAt(2.0f, 2.0f, 2.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+    glTranslatef(0.0f, -1.0f, 0.0f);
+    glRotatef(baseAngle, 0.0f, 1.0f, 0.0f); // 90도 꺾인걸 생각해 z축 중심으로 돌아야한다.
+    BaseArm();
+    glRotatef(lowAngle, 0.0f, 0.0f, 1.0f);
+    glTranslatef(0.0f, 0.4f, 0.0f);
 
-    
-   // glRotatef(theta, 0.0f, 1.0f, 0.0f); // 카메라가 움직이네가 아닌, 물체가 움직임
-    glRotatef(theta, rotationDirection[0], rotationDirection[1], rotationDirection[2]); // 물체의 움직임 각도를 설정한 각도대로 물체가 움직인다.
+    LowerArm();
+    glTranslatef(0.0f, 1.0f, 0.0f); // 회전 이후에 이동으로 들어가야 한다. 그래서 먼저 선언
+    glRotatef(upperAngle, 1.0f, 0.0f, 0.0f);
 
-    Quad(0, 3, 2, 1);
-    Quad(1, 2, 6, 5);
-    Quad(2, 3, 7, 6);
-    Quad(3, 0, 4, 7);
-    Quad(4, 5, 6, 7);
-    Quad(5, 4, 0, 1);
+    UpperArm();
 
-    // shdow polygon
-    GLfloat m[16];
-    for (register int i = 0; i < 16; i++)
-        m[i] = 0.0f;
-    m[0] = m[5] = m[10] = 1.0f;
-    m[7] = -1.0f / light_pos[1];
 
-    glPushMatrix();
-    glTranslatef(0.0f, -1.5f, 0.0f);
-    glTranslatef(light_pos[0], light_pos[1], light_pos[2]);
-    glMultMatrixf(m);
-    glTranslatef(-light_pos[0], -light_pos[1], -light_pos[2]);
 
-    glColor3f(0.5f, 0.5f, 0.5f);
-    glBegin(GL_QUADS);
-    Quad_NC(0, 3, 2, 1);
-    Quad_NC(1, 2, 6, 5);
-    Quad_NC(2, 3, 7, 6);
-    Quad_NC(3, 0, 4, 7);
-    Quad_NC(4, 5, 6, 7);
-    Quad_NC(5, 4, 0, 1);
-    glEnd();
-    glPopMatrix(); // 저장
 
     SwapBuffers(MyDC);
 
     return;
 }
 
-
-void Quad_NC(int a, int b, int c, int d) 
-
+void BaseArm(void)
 {
-    glVertex3fv(vertices[a]);
-    glVertex3fv(vertices[b]);
-    glVertex3fv(vertices[c]);
-    glVertex3fv(vertices[d]);
+    glPushMatrix();
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+    gluCylinder(pObj, 0.5, 0.5, 0.3, 20, 1);
+    glPopMatrix();
 
     return;
 }
 
-void Quad(int a, int b, int c, int d)
+void LowerArm(void)
 {
-    glBegin(GL_QUADS);
-    glColor3fv(colors[a]);
-    glVertex3fv(vertices[a]);
-    glColor3fv(colors[b]);
-    glVertex3fv(vertices[b]);
-    glColor3fv(colors[c]);
-    glVertex3fv(vertices[c]);
-    glColor3fv(colors[d]);
-    glVertex3fv(vertices[d]);
-    glEnd();
+    glPushMatrix();
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glTranslatef(0.0f, 0.5f, 0.0f);
+    glScalef(0.2f, 1.0f, 0.2f);
+    glutWireCube(1.0);
+    glPopMatrix();
+
+    return;
+}
+
+void UpperArm(void)
+{
+    glPushMatrix();
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glTranslatef(0.0f, 0.4f, 0.0f);
+    glScalef(0.2f, 0.8f, 0.2f);
+    glutWireCube(1.0);
+    glPopMatrix();
 
     return;
 }

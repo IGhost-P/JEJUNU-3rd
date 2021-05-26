@@ -9,7 +9,7 @@
 #include <glu.h>
 
 #define MAX_LOADSTRING 100
-#define IDT_TIMER 1
+
 // 전역 변수:
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
@@ -24,11 +24,6 @@ bool bSetupPixelFormat(HDC hdc);
 void Resize(int width, int height);
 void DrawScene(HDC MyDC);
 
-float centerPos[2] = { 0.0f, 0.0f };
-float centerPos2[2] = { 0.0f, 0.0f };
-bool DoColide(float centerX, float centerY);
-bool DoColide(float left, float bottom, float right, float top);
-float moveDirection[2] = { 0.05f, 0.00f };
 /////////////////////////////
 
 
@@ -157,7 +152,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         hRenderingContext = wglCreateContext(hDeviceContext);
         wglMakeCurrent(hDeviceContext, hRenderingContext);
-        SetTimer(hWnd, IDT_TIMER, 100, NULL); 
+
         break;
 /*
     case WM_COMMAND:
@@ -202,57 +197,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         PostQuitMessage(0);
         break;
+    
     case WM_KEYDOWN:
-        if (wParam == VK_LEFT) {
-            if (!DoColide(centerPos[0] - 0.2f, centerPos[1])) {
-                centerPos[0] -= 0.2f;
-                InvalidateRect(hWnd, NULL, false);
-            }
-        }
-        else if (wParam == VK_RIGHT) {
-            if (!DoColide(centerPos[0] + 0.2f, centerPos[1])) {
-                centerPos[0] += 0.2f;
-                InvalidateRect(hWnd, NULL, false);
-            }
-        }
-        else if (wParam == VK_UP) {
-            if (!DoColide(centerPos[0], centerPos[1] + 0.2f)) {
-                centerPos[1] += 0.2f;
-                InvalidateRect(hWnd, NULL, false);
-            }
-        }
-        else if (wParam == VK_DOWN) {
-            if (!DoColide(centerPos[0], centerPos[1] - 0.2f)) {
-                centerPos[1] -= 0.2f;
-                InvalidateRect(hWnd, NULL, false);
-            }
-        }
-        break;
 
         if (wParam == VK_ESCAPE) {
 
             DestroyWindow(hWnd);
         }
         break;
-    case WM_TIMER:
-        switch (wParam){
-        case IDT_TIMER:
-                float centerX = centerPos[0] + moveDirection[0];
-                float centerY = centerPos[1] + moveDirection[1];
-                
-               
-                if (!DoColide(centerX - 0.1f, centerY - 0.1f, centerX + 0.1f, centerY + 0.1f)) {
-                    centerPos[0] += moveDirection[0];
-                    centerPos[1] += moveDirection[1];
-                    centerPos2[0] += moveDirection[1];
-                    centerPos2[1] += moveDirection[0];
-                    InvalidateRect(hWnd, NULL, false);
-                }
-                InvalidateRect(hWnd, NULL, false);
-                break;
-        
-            break;
-        }
 
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
@@ -339,51 +291,11 @@ void DrawScene(HDC MyDC)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    //---------------- 상자 1--------------------//
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-  
-    glColor3f(0.0f, 0.0f, 0.0f);
-    glRectf(centerPos[0] - 0.1f, centerPos[1] - 0.1f, centerPos[0] + 0.1f, centerPos[1] + 0.1f);
-
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-    glColor3f(1.0f, 1.0f, 0.0f);
-    glRectf(centerPos[0] - 0.1f, centerPos[1] - 0.1f, centerPos[0] + 0.1f, centerPos[1] + 0.1f);
-
-    //---------------- 상자 2--------------------//
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-    glColor3f(0.0f, 0.0f, 0.0f);
-    glRectf(centerPos2[0] - 0.1f, centerPos2[1] - 0.1f, centerPos2[0] + 0.1f, centerPos2[1] + 0.1f);
-
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-    glColor3f(1.0f, 0.0f, 0.5f);
-    glRectf(centerPos2[0] - 0.1f, centerPos2[1] - 0.1f, centerPos2[0] + 0.1f, centerPos2[1] + 0.1f);
-    
-    glColor3f(1.0f, 1.0f, 0.5f);
-    glRecti(-1.0f, -1.0f, 1.0f, 1.0f);
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glRectf(-0.1f, -0.1f, 0.1f, 0.1f);
 
     SwapBuffers(MyDC);
-    return;
-}
 
-bool DoColide(float centerX, float centerY)
-{
-    if (centerX >= 1.0f || centerY >= 1.0f || centerX <= -1.0f || centerY <= -1.0f)
-        return true;
-    return false;
-}
-bool DoColide(float left, float bottom, float right, float top)
-{
-    float bound = 1.00001f;
-    if (left < -bound || right > bound ){
-        moveDirection[0] = -moveDirection[0];
-        return true;
-    }
-    else if(bottom < -bound || top > bound){
-        moveDirection[1] = -moveDirection[1]; 
-    }
-    return false;
+    return;
 }
