@@ -35,9 +35,11 @@ GLfloat viewer[3] = { 2.0f, 2.0f, 2.0f };
 bool Pswitch = 0;
 bool Dswitch = 0;
 bool Sswitch = 0;
-void DireactionalLight(bool Pswitch);
-void PointLight(bool Dswitch);
+bool Mswitch = 0;
+void DireactionalLight(bool Dswitch);
+void PointLight(bool Pswitch);
 void SpotLight(bool Sswitch);
+void MultipleLight(bool Mswitch);
 //-----------------------------------------------------
 
 
@@ -261,10 +263,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
             break;
         case 0x4D:
-           
-            Pswitch = true;
-            Dswitch = true;
-            Sswitch = true;
+            Mswitch = true;
             break;
         }
         InvalidateRect(hWnd, NULL, true);
@@ -376,11 +375,18 @@ void DrawScene(HDC MyDC)
 
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
-
-    DireactionalLight(Pswitch);
-    PointLight(Dswitch);
-    SpotLight(Sswitch);
-   
+    if (Pswitch) {
+        DireactionalLight(Pswitch);
+    }
+    else if (Dswitch) {
+        PointLight(Dswitch);
+    }
+    else if (Sswitch) {
+        SpotLight(Sswitch);
+    }
+    else if (Mswitch) {
+        MultipleLight(Mswitch);
+    }
     glMultMatrixd(trball.rMat);
     glColor3f(1.0f, 0.0f, 0.0f);
     glutSolidTeapot(1.0);
@@ -391,12 +397,12 @@ void DrawScene(HDC MyDC)
 
     return;
 }
-void DireactionalLight(bool Pswitch)
+void DireactionalLight(bool Dswitch)
 {
-    if (Pswitch)
+    if (Dswitch)
         {
-        GLfloat position0[] = { 0.0f, 0.0f, 1.0f, 0.0f };
-        GLfloat diffuse0[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+        GLfloat position0[] = { 0.0f, 1.0f, 0.0f, 0.0f };
+        GLfloat diffuse0[] = { 0.0f, 0.0f, 1.0f, 1.0f };
         GLfloat specular0[] = { 1.0f, 1.0f, 1.0f, 1.0f };
         GLfloat ambient0[] = { 0.1f, 0.1f, 0.1f, 0.1f };
 
@@ -405,10 +411,11 @@ void DireactionalLight(bool Pswitch)
         glLightfv(GL_LIGHT0, GL_SPECULAR, specular0);
         glLightfv(GL_LIGHT0, GL_AMBIENT, ambient0);
 }
+   
 }
-void PointLight(bool Dswitch)
+void PointLight(bool Pswitch)
 {
-    if (Dswitch) {
+    if (Pswitch) {
         GLfloat position0[] = { 2.0f, 0.0f, 0.0f, 1.0f };
         GLfloat diffuse0[] = { 1.0f, 0.0f, 0.0f, 1.0f };
         GLfloat specular0[] = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -427,8 +434,8 @@ void PointLight(bool Dswitch)
 void SpotLight(bool Sswitch)
 {
     if (Sswitch) {
-        GLfloat position0[] = { 2.0f, 0.0f, 0.0f, 1.0f };
-        GLfloat diffuse0[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+        GLfloat position0[] = { 0.0f, 0.0f, 2.0f, 1.0f };
+        GLfloat diffuse0[] = { 0.0f, 1.0f, 0.0f, 1.0f };
         GLfloat specular0[] = { 1.0f, 1.0f, 1.0f, 1.0f };
         GLfloat ambient0[] = { 0.1f, 0.1f, 0.1f, 0.1f };
 
@@ -437,47 +444,67 @@ void SpotLight(bool Sswitch)
         glLightfv(GL_LIGHT0, GL_SPECULAR, specular0);
         glLightfv(GL_LIGHT0, GL_AMBIENT, ambient0);
 
-        //glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 2.0f);
-        //glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.2f);
-        //glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.1f);
+       //glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 2.0f);
+       // glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.2f);
+       //glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.1f);
 
-        GLfloat directional0[] = { -1.0f, 0.5f, 0.0f };
+        GLfloat directional0[] = { 0.0f, 0.0f, -1.0f };
         glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, directional0);
         glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 30.0f);
-        glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 20.0f);
+        glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 10.0f);
     }
 }
-void MultipleLight() {
+void MultipleLight(bool Mswitch) {
 
- 
-    GLfloat position0[] = { 2.0f, 0.0f, 0.0f, 1.0f };
-    GLfloat diffuse0[] = { 1.0f, 0.0f, 0.0f, 1.0f };
-    GLfloat specular0[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-    GLfloat ambient0[] = { 0.1f, 0.1f, 0.1f, 0.1f };
+    if (Mswitch) {
+        glEnable(GL_LIGHT1);
+        glEnable(GL_LIGHT2);
+        //------ Directional------//
+        GLfloat position0[] = { 0.0f, 1.0f, 0.0f, 0.0f };
+        GLfloat diffuse0[] = { 0.0f, 0.0f, 1.0f, 1.0f };
+        GLfloat specular0[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+        GLfloat ambient0[] = { 0.1f, 0.1f, 0.1f, 0.1f };
 
-    glLightfv(GL_LIGHT0, GL_POSITION, position0);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse0);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, specular0);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient0);
+        glLightfv(GL_LIGHT0, GL_POSITION, position0);
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse0);
+        glLightfv(GL_LIGHT0, GL_SPECULAR, specular0);
+        glLightfv(GL_LIGHT0, GL_AMBIENT, ambient0);
 
-    //glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 2.0f);
-    //glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.2f);
-    //glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.1f);
+        //------ Poinst------//
 
-    GLfloat directional0[] = { -1.0f, 0.5f, 0.0f };
-    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, directional0);
-    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 30.0f);
-    glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 20.0f);
+        GLfloat position1[] = { 2.0f, 0.0f, 0.0f, 1.0f };
+        GLfloat diffuse1[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+        GLfloat specular1[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+        GLfloat ambient1[] = { 0.1f, 0.1f, 0.1f, 0.1f };
 
-    glEnable(GL_LIGHT1); // 조명 추가
+        glLightfv(GL_LIGHT1, GL_POSITION, position1);
+        glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse1);
+        glLightfv(GL_LIGHT1, GL_SPECULAR, specular1);
+        glLightfv(GL_LIGHT1, GL_AMBIENT, ambient1);
 
-    GLfloat position1[] = { 0.0f, 1.0f, 0.0f, 1.0f };
-    GLfloat diffuse1[] = { 0.0f, 0.0f, 1.0f, 1.0f };
-    GLfloat specular1[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-    GLfloat ambient1[] = { 0.1f, 0.1f, 0.1f, 0.1f };
+        glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 2.0f);
+        glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.2f);
+        glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0.1f);
 
-    glLightfv(GL_LIGHT1, GL_POSITION, position1);
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse1);
-    glLightfv(GL_LIGHT1, GL_SPECULAR, specular1);
-    glLightfv(GL_LIGHT1, GL_AMBIENT, ambient1);
+        //------ Spot------//
+
+        GLfloat position2[] = { 0.0f, 0.0f, 2.0f, 1.0f };
+        GLfloat diffuse2[] = { 0.0f, 1.0f, 0.0f, 1.0f };
+        GLfloat specular2[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+        GLfloat ambient2[] = { 0.1f, 0.1f, 0.1f, 0.1f };
+
+        glLightfv(GL_LIGHT2, GL_POSITION, position2);
+        glLightfv(GL_LIGHT2, GL_DIFFUSE, diffuse2);
+        glLightfv(GL_LIGHT2, GL_SPECULAR, specular2);
+        glLightfv(GL_LIGHT2, GL_AMBIENT, ambient2);
+
+        //glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 2.0f);
+        // glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.2f);
+        //glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.1f);
+
+        GLfloat directional0[] = { 0.0f, 0.0f, -1.0f };
+        glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, directional0);
+        glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, 30.0f);
+        glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 20.0f);
+    }
 }
