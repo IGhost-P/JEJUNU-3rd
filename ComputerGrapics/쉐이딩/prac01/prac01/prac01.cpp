@@ -1,7 +1,11 @@
 ﻿// prac01.cpp : 애플리케이션에 대한 진입점을 정의합니다.
-//
-// 2021. 05. 14.
-// Created by Soo-Kyun Kim
+
+
+// 2016108271 컴퓨터공학과 양상우
+// 컴퓨터그래픽스 및 응용
+// 김수균 교수님
+// 제출일 2021. 05. 31.
+
 
 #include "framework.h"
 #include "prac01.h"
@@ -406,7 +410,7 @@ void DrawScene(HDC MyDC)
     glMultMatrixd(trball.rMat);
 
     glColor3f(0.3f, 0.5f, 0.8f); // 재질 컬러 결정
-    DrawTetrahedron(number); // 분리 레벨 조정함수
+    DrawTetrahedron(number); // number은 분리 레벨 조절
 
        
     SwapBuffers(MyDC);
