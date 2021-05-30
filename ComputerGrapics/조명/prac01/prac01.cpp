@@ -248,22 +248,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
             Dswitch = false;
             Sswitch = false;
+            Mswitch = false;
             break;
         case 0x50: // 방향성 광원
             Dswitch = true;
 
             Pswitch = false;
             Sswitch = false;
+            Mswitch = false;
             break;
-        case 0x53:
+        case 0x53: // 스포트 광원
             Sswitch = true;
 
             Pswitch = false;
             Dswitch = false;
-
+            Mswitch = false;
             break;
-        case 0x4D:
+        case 0x4D: // 모든 광원
             Mswitch = true;
+
+            Pswitch = false;
+            Dswitch = false;
+            Sswitch = false;
             break;
         }
         InvalidateRect(hWnd, NULL, true);
@@ -375,6 +381,8 @@ void DrawScene(HDC MyDC)
 
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
+
+    // 해당 조건이 참 일경우에 해당 하는 광원이 나옴
     if (Pswitch) {
         DireactionalLight(Pswitch);
     }
@@ -397,10 +405,11 @@ void DrawScene(HDC MyDC)
 
     return;
 }
+// 각각 조명을 함수로 분리함
 void DireactionalLight(bool Dswitch)
 {
-    if (Dswitch)
-        {
+    if (Dswitch) // 조건이 참일 때만 방향성 광원
+    {
         GLfloat position0[] = { 0.0f, 1.0f, 0.0f, 0.0f };
         GLfloat diffuse0[] = { 0.0f, 0.0f, 1.0f, 1.0f };
         GLfloat specular0[] = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -410,12 +419,12 @@ void DireactionalLight(bool Dswitch)
         glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse0);
         glLightfv(GL_LIGHT0, GL_SPECULAR, specular0);
         glLightfv(GL_LIGHT0, GL_AMBIENT, ambient0);
-}
-   
+    }
 }
 void PointLight(bool Pswitch)
 {
-    if (Pswitch) {
+    if (Pswitch) // 조건이 참 일 때만 점 광원
+    {
         GLfloat position0[] = { 2.0f, 0.0f, 0.0f, 1.0f };
         GLfloat diffuse0[] = { 1.0f, 0.0f, 0.0f, 1.0f };
         GLfloat specular0[] = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -430,10 +439,12 @@ void PointLight(bool Pswitch)
         glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.2f);
         glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.1f);
     }
+  
 }
 void SpotLight(bool Sswitch)
 {
-    if (Sswitch) {
+    if (Sswitch) // 조건이 참 일 때만 스포트 광원
+    {
         GLfloat position0[] = { 0.0f, 0.0f, 2.0f, 1.0f };
         GLfloat diffuse0[] = { 0.0f, 1.0f, 0.0f, 1.0f };
         GLfloat specular0[] = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -453,10 +464,12 @@ void SpotLight(bool Sswitch)
         glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 30.0f);
         glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 10.0f);
     }
+
 }
 void MultipleLight(bool Mswitch) {
 
-    if (Mswitch) {
+    if (Mswitch) // 조건이 참 일 때만 모든 광원
+    {
         glEnable(GL_LIGHT1);
         glEnable(GL_LIGHT2);
         //------ Directional------//
@@ -507,4 +520,5 @@ void MultipleLight(bool Mswitch) {
         glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, 30.0f);
         glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 20.0f);
     }
+ 
 }

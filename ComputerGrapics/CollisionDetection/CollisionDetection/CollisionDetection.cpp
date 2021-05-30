@@ -30,7 +30,7 @@ void Box(float R, float G, float B, float centerPos[]);
 void inWMTIMER(HWND hWnd, float moveDirection[], float centerPos[]);
 
 float centerPosBoxA[2] = { 0.0f, 0.0f };
-float centerPosBoxB[2] = { -0.9f, 0.9f };
+float centerPosBoxB[2] = { -0.9f, 0.9f };       
 float moveDirectionBoxA[2] = { 0.075f, 0.00f }; // 2.5배 빠르게 0.25 -> 0.75
 float moveDirectionBoxB[2] = { 0.05f, 0.05f }; // 2배 빠르게 0.25 -> 0.5
 float RGBBoxA[3] = { 0.1f, 1.0f, 0.0f };
