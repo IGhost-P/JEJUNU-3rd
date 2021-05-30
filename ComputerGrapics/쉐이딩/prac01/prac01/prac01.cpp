@@ -372,7 +372,8 @@ void DrawScene(HDC MyDC)
     glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
 
     glMultMatrixd(trball.rMat);
-   
+
+    glColor3f(0.3f, 0.5f, 0.8f); // 재질 컬러 결정
     DrawTetrahedron(number);
 
        
