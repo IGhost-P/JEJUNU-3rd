@@ -337,6 +337,16 @@ void DrawScene(HDC MyDC)
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
+    GLfloat mat_ambient[] = { 0.1f, 0.1f, 0.1f, 0.1f };
+    GLfloat mat_diffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+    GLfloat mat_specular[] = { 1.0f, 1.0f, 1.0f, 1.01f };
+    GLfloat mat_shininess = 100.0f; // 반짝임
+
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
+    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess);
+
     glMultMatrixd(trball.rMat);
    
     glutSolidTeapot(1.0);
