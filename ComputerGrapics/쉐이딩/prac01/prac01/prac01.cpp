@@ -225,7 +225,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         switch (wParam)
         {
 
-        case VK_RETURN:
+        case VK_RETURN: 
             number++;
             break;
 
@@ -383,7 +383,9 @@ void DrawScene(HDC MyDC)
 
 void DrawTriangle(point3 a, point3 b, point3 c) {
 
-    glBegin(GL_LINE_LOOP);
+   // glBegin(GL_LINE_LOOP);
+    glBegin(GL_TRIANGLES);
+    glNormal3fv(a); // 균일 쉐이딩
     glVertex3fv(a);
     glVertex3fv(b);
     glVertex3fv(c);
