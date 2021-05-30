@@ -228,35 +228,35 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         switch (wParam)
         {
 
-        case 0x57:
+        case 0x57: // W를 누르면 wire 프레임이 활성화 됩니다.
             wire = true;
 
             flat = false;
             grow = false;
             break;
         
-        case 0x46:
+        case 0x46: // F를 누르면 균일 쉐이딩 이 활성화 됩니다.
             flat = true;
 
             wire = false;
             grow = false;
             break;
        
-        case 0x47:
+        case 0x47: // G를 누르면 그로우 쉐이딩 이 활성화 됩니다.
             grow = true;
 
             wire = false;
             flat = false;
             break;
 
-        case VK_RETURN: 
-            if (number <= 10) {
+        case VK_RETURN: // number 0 = level 1이라 할때.
+            if (number <= 11) { // NUMBER 10이하 즉, level이 10이하 이면 증가할수잇습니다.
                 number++;
             }
             break;
         
         case VK_BACK:
-            if (number > 0) {
+            if (number > 0) {  // NUMBER 1이상 즉, level이 0이상 이면 감소할수잇습니다. (0까지만 가능)
                 number--;
             }
             break;
@@ -406,7 +406,7 @@ void DrawScene(HDC MyDC)
     glMultMatrixd(trball.rMat);
 
     glColor3f(0.3f, 0.5f, 0.8f); // 재질 컬러 결정
-    DrawTetrahedron(number);
+    DrawTetrahedron(number); // 분리 레벨 조정함수
 
        
     SwapBuffers(MyDC);
@@ -416,7 +416,7 @@ void DrawScene(HDC MyDC)
 
 void DrawTriangle(point3 a, point3 b, point3 c) {
 
-    if (wire)
+    if (wire) // 해당 결과가 참이면 와이어프레임 을 호출함
     {
         glBegin(GL_LINE_LOOP);
         glVertex3fv(a);
@@ -424,7 +424,7 @@ void DrawTriangle(point3 a, point3 b, point3 c) {
         glVertex3fv(c);
         glEnd();
    }
-    else if (flat)
+    else if (flat) // 해당 결과가 참이면 균일 쉐이딩을 호출함
     {
         glBegin(GL_TRIANGLES);
         glNormal3fv(a); // 균일 쉐이딩
@@ -434,7 +434,7 @@ void DrawTriangle(point3 a, point3 b, point3 c) {
         glEnd();
     }
 
-    else if (grow)
+    else if (grow) // 해당 결과가 참이면 그로우 쉐이딩을 호출함
     {
         glBegin(GL_TRIANGLES);
         glNormal3fv(a); //  그로우 쉐이딩
