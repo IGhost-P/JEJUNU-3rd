@@ -27,6 +27,18 @@ HGLRC hRenderingContext;						// current rendering context
 TrackBall trball;
 bool bLButtonDown = false;
 //-----------------------------------------------------
+// sphere by recursive subdivision
+typedef GLfloat point3[3];
+point3 v[4] = { {0.0, 0.0, 1.0} , {0.0, 0.942809, -0.333333},
+                {-0.816497, -0.471405, -0.333333},
+                {0.816497, -0.471405, -0.333333} };
+
+int number = 0;
+
+void DrawTriangle(point3 a, point3 b, point3 c);
+void DrawTetrahedron(int n);
+void DivideTriangle(point3 a, point3 b, point3 c, int n);
+void Normalize(point3 p);
 
 bool bSetupPixelFormat(HDC hdc);
 void Resize(int width, int height);
@@ -337,31 +349,62 @@ void DrawScene(HDC MyDC)
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
-    /*
-    // ----WHITE SHINNY ----//
-    GLfloat mat_ambient[] = { 0.1f, 0.1f, 0.1f, 0.1f };
-    GLfloat mat_diffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-    GLfloat mat_specular[] = { 1.0f, 1.0f, 1.0f, 1.01f };
-    GLfloat mat_shininess = 100.0f; // 반짝임
-    */
-    // ---- RED PLASTIC ----//
-    GLfloat mat_ambient[] = { 0.3f, 0.0f, 0.0f, 1.0f }; // 반사광
-    GLfloat mat_diffuse[] = { 0.6f, 0.0f, 0.0f, 1.0f }; 
-    GLfloat mat_specular[] = { 0.8f, 0.6f, 0.6f, 1.01f }; // 정반사
-    GLfloat mat_shininess = 100.0f; // 반짝임
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE); // 재질 변화에 따른 성능 저하를 줄임, 모드에 해당하는 재질의 속성들이 현재 컬러(diffuse)를 사용하도록함
 
-
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
-    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess);
+    float specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+    float shininess[] = { 100.0f };
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shininess);
 
     glMultMatrixd(trball.rMat);
    
-    glutSolidTeapot(1.0);
+    DrawTetrahedron(number);
 
        
     SwapBuffers(MyDC);
 
     return;
+}
+
+void DrawTriangle(point3 a, point3 b, point3 c) {
+
+    glBegin(GL_LINE_LOOP);
+    glVertex3fv(a);
+    glVertex3fv(b);
+    glVertex3fv(c);
+    glEnd();
+}
+
+void DrawTetrahedron(int n) {
+    DivideTriangle(v[0], v[1], v[2], n);
+    DivideTriangle(v[1], v[3], v[2], n);
+    DivideTriangle(v[2], v[3], v[0], n);
+    DivideTriangle(v[3], v[1], v[0], n);
+}
+void DivideTriangle(point3 a, point3 b, point3 c, int n) {
+    point3 v1, v2, v3;
+    if (n > 0)
+    {
+        for (int j = 0; j < 3; j++) v1[j] = a[j] + b[j];
+        Normalize(v1);
+        for (int j = 0; j < 3; j++) v2[j] = b[j] + c[j];
+        Normalize(v2);
+        for (int j = 0; j < 3; j++) v3[j] = c[j] + a[j];
+        Normalize(v3);
+        DivideTriangle(a, v1, v3, n - 1);
+        DivideTriangle(b, v2, v1, n - 1);
+        DivideTriangle(c, v3, v2, n - 1);
+        DivideTriangle(v1, v2, v3, n - 1);
+    }
+    else
+        DrawTriangle(a, b, c);
+}
+
+void   Normalize(point3 p) {
+    double d = 0.0;
+    for (int i = 0; i < 3; i++) d += p[i] * p[i];
+    d = sqrt(d);
+    if (d > 0.0)
+        for (int i = 0; i < 3; i++) p[i] /= d;
 }
