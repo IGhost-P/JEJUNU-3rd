@@ -385,9 +385,12 @@ void DrawTriangle(point3 a, point3 b, point3 c) {
 
    // glBegin(GL_LINE_LOOP);
     glBegin(GL_TRIANGLES);
-    glNormal3fv(a); // 균일 쉐이딩
+   // glNormal3fv(a); // 균일 쉐이딩
+    glNormal3fv(a); //  그로우 쉐이딩
     glVertex3fv(a);
+    glNormal3fv(b); // 그로우 쉐이딩
     glVertex3fv(b);
+    glNormal3fv(c); // 그로우 쉐이딩
     glVertex3fv(c);
     glEnd();
 }
