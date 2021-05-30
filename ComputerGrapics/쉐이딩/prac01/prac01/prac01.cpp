@@ -16,6 +16,9 @@
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
+bool wire = true;
+bool flat = false;
+bool grow = false;
 
 /////////////////////// sk
 HDC hDeviceContext;								// current device context
@@ -225,8 +228,37 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         switch (wParam)
         {
 
+        case 0x57:
+            wire = true;
+
+            flat = false;
+            grow = false;
+            break;
+        
+        case 0x46:
+            flat = true;
+
+            wire = false;
+            grow = false;
+            break;
+       
+        case 0x47:
+            grow = true;
+
+            wire = false;
+            flat = false;
+            break;
+
         case VK_RETURN: 
-            number++;
+            if (number <= 10) {
+                number++;
+            }
+            break;
+        
+        case VK_BACK:
+            if (number > 0) {
+                number--;
+            }
             break;
 
         case VK_ESCAPE:
@@ -384,16 +416,35 @@ void DrawScene(HDC MyDC)
 
 void DrawTriangle(point3 a, point3 b, point3 c) {
 
-   // glBegin(GL_LINE_LOOP);
-    glBegin(GL_TRIANGLES);
-   // glNormal3fv(a); // 균일 쉐이딩
-    glNormal3fv(a); //  그로우 쉐이딩
-    glVertex3fv(a);
-    glNormal3fv(b); // 그로우 쉐이딩
-    glVertex3fv(b);
-    glNormal3fv(c); // 그로우 쉐이딩
-    glVertex3fv(c);
-    glEnd();
+    if (wire)
+    {
+        glBegin(GL_LINE_LOOP);
+        glVertex3fv(a);
+        glVertex3fv(b);
+        glVertex3fv(c);
+        glEnd();
+   }
+    else if (flat)
+    {
+        glBegin(GL_TRIANGLES);
+        glNormal3fv(a); // 균일 쉐이딩
+        glVertex3fv(a);
+        glVertex3fv(b);
+        glVertex3fv(c);
+        glEnd();
+    }
+
+    else if (grow)
+    {
+        glBegin(GL_TRIANGLES);
+        glNormal3fv(a); //  그로우 쉐이딩
+        glVertex3fv(a);
+        glNormal3fv(b); // 그로우 쉐이딩
+        glVertex3fv(b);
+        glNormal3fv(c); // 그로우 쉐이딩
+        glVertex3fv(c);
+        glEnd();
+    }
 }
 
 void DrawTetrahedron(int n) {
