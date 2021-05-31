@@ -445,7 +445,7 @@ void DrawTriangle(point3 a, point3 b, point3 c) {
         glVertex3fv(a);
         glNormal3fv(b); // 그로우 쉐이딩
         glVertex3fv(b);
-        glNormal3fv(c); // 그로우 쉐이딩
+        glNormal3fv(c); // 그로우 쉐이딩//
         glVertex3fv(c);
         glEnd();
     }
