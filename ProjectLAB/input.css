@@ -98,8 +98,6 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  transition: 0.3s;
 }
 @media screen and (max-width: 600px) {
     .form_login{
