@@ -53,7 +53,7 @@ table {
 }
 
 .form_login{
-  width: 30%;
+  width: 31.5rem;
   height: 80%;
   background: white;
   display: flex;
@@ -89,7 +89,7 @@ p {
 }
 .btn_login{
   position: absolute;
-  width: 30%;
+  width: 31.5rem;
   bottom : 10%;
   height: 7%;
   background: #3a57e8;
