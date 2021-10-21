@@ -1,30 +1,52 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-<!--  -->
+    <!-- CSS 넣기전 -->
+    <style>
+        .main_container {
+            display: grid;
+            grid-template-areas:
+                "header header header"
+                "sidebar  main  .    "
+                "footer footer footer";
+        }
 
-<!--  -->
+        .header {
+            grid-area: header;
+        }
+
+        .sidebar {
+            grid-area: sidebar;
+        }
+
+        .main-content {
+            grid-area: main;
+        }
+        .footer {
+            grid-area: footer;
+        }
+    </style>
+    <!--  -->
 </head>
-<body>
-<div class="container">
-    <div class="header">
-        </div class="profile">profile</div>
-    </div>
-    <div class="main">
-        <div class="resume">resum</div>
-    </div>
-    <div class="sidebar">
-        <div class="assignment">assignment</div>
-    </div>
-    <div class="footer">
-        <div class="link_box">link_box</div>
-    </div>
-    
 
-</div>
+<body>
+    <div class="main_container">
+        <header class="header">
+            <div class="profile">profile</div>
+        </header>
+        <div class="sidebar">
+            <div class="assignment">assignment</div>
+        </div>
+        <div class="main-content">
+            <div class="resume">resum</div>
+        </div>
+        <div class="footer">
+            <div class="link_box">link_box</div>
+        </div>
+    </div>
 </body>
-</html>~
