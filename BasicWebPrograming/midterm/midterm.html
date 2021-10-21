@@ -8,9 +8,17 @@
     <title>Document</title>
     <!-- CSS 넣기전 -->
     <style>
+        body{
+            margin: 0;
+        }
+
         .main_container {
+            width: 100vw;
+            height: 100vh;
+            background-color: #ececec;
             display: grid;
-            grid-template-columns: 200px 300px 300px;
+            grid-template-columns: 20% 40% 40%;
+            grid-template-rows: 2% 94% 1%;
             grid-template-areas:
                 "header header header"
                 "sidebar  main  main "
@@ -19,22 +27,31 @@
 
         .header {
             grid-area: header;
-            background-color: antiquewhite;
+            /* background-color: antiquewhite; */
+            padding: 2px;
+            border-bottom: solid 0.02rem #8b8b8b;
+            border-left:10px solid rgb(20, 20, 20)
         }
 
         .sidebar {
             grid-area: sidebar;
-            background-color: aqua;
+            /* background-color: aqua; */
+            border-right: solid 0.02rem #8b8b8b;
+            border-bottom: solid 0.02rem #8b8b8b;
+            padding: 10px;
         }
 
         .main-content {
             grid-area: main;
-            background-color: bisque;
+            /* background-color: bisque; */
+            border-bottom: solid 0.02rem #8b8b8b;
+            padding: 10px;
         }
 
         .footer {
             grid-area: footer;
-            background-color: brown;
+            padding: 10px;
+            /* background-color: brown; */
         }
 
         .profile_img>img {
@@ -43,6 +60,14 @@
         }
         .profile_title{
             list-style:none;
+            padding-left: 0;
+        }
+        .title{
+            margin: 10px 0;
+            font-size: 2rem;
+            font-weight: 200;
+            color: #4e4e4e;
+
         }
     </style>
     <!--  -->
@@ -106,10 +131,76 @@
                         </li>
                     </ul>
                 </div>
+                <div class="resum_learn">
+                    <div class="title">
+                        LEARNED 
+                    </div>
+                    <ol>
+                        <li>
+                            HTML
+                        </li>
+                        <li>
+                            CSS
+                        </li>
+                        <li>
+                            JS
+                        </li>
+                        <li>
+                            REACT
+                        </li>
+                        <li>
+                            REACT-NATIVE
+                        </li>
+                        <li>
+                            NODE-JS
+                        </li>
+                        <li>
+                            MySQL
+                        </li>
+                        <li>
+                            MONGO-DB
+                        </li>
+                    </ol>
+                </div>
+                <div class="resum_assignment">
+                    <details>
+                        <summary>week1</summary>
+                        <iframe
+                        src="../week1/HowToinstallInteliJ.html"
+                        name="week1-1"
+                        width=100%
+                        height=100%
+                        sandbox="allow-scripts allow-popups"
+                        style="border:none">
+                    </iframe>
+                    </details>
+                    <details>
+                        <summary>week5</summary>
+                        <iframe
+                        src="../week5/HelloDialog.html"
+                        name="week5-2"
+                        width=100%
+                        height="100px"
+                        sandbox="allow-scripts allow-popups"
+                        style="border:none">
+                    </iframe>
+                    </details>
+                    <details>
+                        <summary>week7</summary>
+                        <iframe
+                        src="../week5/HelloDialog.html"
+                        name="week5-2"
+                        width=100%
+                        height="100px"
+                        sandbox="allow-scripts allow-popups"
+                        style="border:none">
+                    </iframe>
+                    </details>
+                </div>
             </article>
         </section>
         <footer class="footer">
-            <div class="link_box">link_box</div>
+            <div class="footer_copyright">@ 2021 iGhost-P</div>
         </footer>
     </div>
 </body>
