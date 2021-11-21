@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 2016108271 양상우 입니다 -->
+    <title>10차시 과제</title>
+    <style>
+        body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,textarea,p,blockquote,th,td,input,select,button{margin: 0; padding: 0;}
+        html,body{
+            height: 100%;
+        }
+        #wrapper {
+            width: 100%;
+            height: 100%;
+        }
+        header{
+            width: 100%;
+            height: 120px;
+            background-color: #066cfa;
+        }
+        .container {
+            width: 100%;
+            height: 400px;
+            padding: 15px;
+            box-sizing: border-box;
+            background-color: #ffd800;
+        }
+        .left-side{
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            box-sizing: border-box;
+            background-color: #00ff90;
+        }
+        footer{
+            height: 120px;
+            background-color: #c3590a;
+            box-sizing: border-box;
+            border-top: 1px solid black;
+            clear: both;
+        }
+        @media all and (min-width: 600px){
+            header, footer{
+                width: 100%;
+                height: 10%;
+            }
+            .container{
+                float: left;
+                width: 60%;
+                height: 80%;
+            }
+            .left-side{
+                float: left;
+                width: 40%;
+                height: 80%;
+            }
+        }
+        @media all and (min-width: 960px){
+            header, footer{
+                width: 100%;
+                height: 10%;
+                box-sizing: border-box;
+            }
+            footer{
+                clear: both;
+            }
+            .container{
+                float: left;
+                width: 60%;
+                height: 80%;
+            }
+            .left-side {
+               clear: none;
+               float: left;
+               width: 20%;
+               height: 80%;
+        }
+    }   
+    </style>
+</head>
+<body>
+  <div id ="wrapper">
+      <header>
+          <h1>header</h1>
+      </header>
+      <aside class="left-side">
+        <h4>좌측 사이드바</h4>
+      </aside>
+      <section class="content">
+        <h4>본문</h4>
+    </section>
+      <footer>
+          <h1>footer</h1>
+      </footer>
+  </div>
+</body>
+</html>
