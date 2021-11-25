@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        :root {
+            --color1: #CCCCFF55;
+            --color2: #6495ED55;
+            --color3: #40E0D055;
+            --color4: #9FE2BF55;
+            --color5: #DE316355;
+            --color6: #FF7F5055;
+            --color7: #FFBF0055;
+        }
+        *{
+            margin: 0;
+            padding: 0;;
+            box-sizing: border-box;
+        }
+        body{
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .wrapper{
+            width: 300px;
+            height: 300px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .jeju{
+            width: 100%;
+            height: 100%;
+            border : 5px solid var(--color1);
+            padding: 15px;
+            border-radius: 10px;
+            transition: 1s ease;
+        }
+        .jeju:hover{
+            box-shadow: 5px 5px 0 var(--color2),
+            10px 10px 0 var(--color3),
+            15px 15px 0 var(--color4),
+            20px 20px 0 var(--color5),
+            25px 25px 0 var(--color6);
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper"> <div class="jeju"></div>
+    
+</div>
+    
+</body>
+</html>

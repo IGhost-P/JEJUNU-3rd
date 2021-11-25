@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+:root {
+    --color1: #CCCCFF55;
+    --color2: #6495ED55;
+    --color3: #40E0D055;
+    --color4: #9FE2BF55;
+    --color5: #DE316355;
+    --color6: #FF7F5055;
+    --color7: #FFBF0055;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+    /*perspective-origin: bottom right;*/
+}
+
+.wrapper {
+    width: 300px;
+    height: 200px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-style: preserve-3d;
+    /*transition: 2s;*/
+    animation: ani 5s linear infinite;
+}
+@keyframes ani {
+    0% {
+        transform: rotateY(0deg) rotateX(0deg);
+    }
+    100% {
+        transform: rotateX(1turn) rotateY(1turn);
+    }
+}
+.wrapper:hover {
+    transform: rotateX(-60deg) rotateY(60deg);
+}
+.wrapper div {
+    width: 100%;
+    height: 100%;
+    background-color: var(--color1);
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 3em;
+    font-weight: 800;
+    letter-spacing: .2em;
+}
+.wrapper .top, .wrapper .bottom {
+    width: 300px;
+    height: 100px;
+}
+.wrapper .left, .wrapper .right {
+    width: 100px;
+    height: 200px;
+}
+
+.wrapper .top {
+    transform: rotateX(90deg) translateZ(100px);
+    background-color: var(--color2);
+}
+.wrapper .bottom {
+    transform: rotateX(-90deg) translateZ(100px);
+    background-color: var(--color3);
+}
+.wrapper .left {
+    transform: rotateY(-90deg) translateZ(150px);
+    background-color: var(--color4);
+}
+.wrapper .right {
+    transform: rotateY(90deg) translateZ(150px);
+    background-color: var(--color5);
+}
+.wrapper .front {
+    transform: translateZ(50px);
+    background-color: var(--color6);
+}
+.wrapper .back {
+    transform: rotateY(0.5turn) translateZ(50px);
+    background-color: var(--color7);
+}
+</style>
+<body>
+<div class="wrapper">
+        <div class="front" >front</div>
+        <div class="back" >back</div>
+        <div class="top" >top</div>
+        <div class="bottom" >bottom</div>
+        <div class="left" >left</div>
+        <div class="right" >right</div>
+</div>
+</body>
+</html>

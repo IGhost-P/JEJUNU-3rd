@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        :root {
+    --color1: #CCCCFF55;
+    --color2: #6495ED55;
+    --color3: #40E0D055;
+    --color4: #9FE2BF55;
+    --color5: #DE316355;
+    --color6: #FF7F5055;
+    --color7: #FFBF0055;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.wrapper {
+    width: 300px;
+    height: 300px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapper path {
+    stroke-dasharray: 54;
+    stroke-dashoffset: 54;
+    transition: 2s;
+    fill: var(--color1)
+}
+.wrapper svg:hover path{
+    stroke-dashoffset: 0;
+}
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+          </svg>
+    </div>
+    
+</body>
+</html>
