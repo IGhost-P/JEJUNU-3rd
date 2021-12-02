@@ -1,51 +1,52 @@
-// 플래처
-uint16_t Fletcher16( uint8_t *data, int count )
-{
-   uint16_t sum1 = 0;
-   uint16_t sum2 = 0;
-   int index;
+// // 플래처
+// uint16_t Fletcher16( uint8_t *data, int count )
+// {
+//    uint16_t sum1 = 0;
+//    uint16_t sum2 = 0;
+//    int index;
 
-   for ( index = 0; index < count; ++index )
-   {
-      sum1 = (sum1 + data[index]) % 255;
-      sum2 = (sum2 + sum1) % 255;
-   }
+//    for ( index = 0; index < count; ++index )
+//    {
+//       sum1 = (sum1 + data[index]) % 255;
+//       sum2 = (sum2 + sum1) % 255;
+//    }
 
-   return (sum2 << 8) | sum1;
-}
-// 애들러#
+//    return (sum2 << 8) | sum1;
+// }
+// // 애들러#
  
-unsigned long adler32(unsigned char *data, int len) /* where data is the location of the data in physical memory and len is the length of the data in bytes */
-{
-    unsigned long a = 1, b = 0;
-    int index;
+// unsigned long adler32(unsigned char *data, int len) /* where data is the location of the data in physical memory and len is the length of the data in bytes */
+// {
+//     unsigned long a = 1, b = 0;
+//     int index;
  
-    /* Process each byte of the data in order */
-    for (index = 0; index < len; ++index)
-    {
-        a = (a + data[index]) % MOD_ADLER;
-        b = (b + a) % MOD_ADLER;
-    }
+//     /* Process each byte of the data in order */
+//     for (index = 0; index < len; ++index)
+//     {
+//         a = (a + data[index]) % MOD_ADLER;
+//         b = (b + a) % MOD_ADLER;
+//     }
  
-    return (b << 16) | a;
-}
+//     return (b << 16) | a;
+// }
 
-// CRC
-#include <inttypes.h> // uint32_t, uint8_t
+// // CRC
+// #include <inttypes.h> // uint32_t, uint8_t
 
-uint32_t CRC32(const uint8_t data[], size_t data_length) {
-	uint32_t crc32 = 0xFFFFFFFFu;
+// uint32_t CRC32(const uint8_t data[], size_t data_length) {
+// 	uint32_t crc32 = 0xFFFFFFFFu;
 	
-	for (size_t i = 0; i < data_length; i++) {
-		const uint32_t lookupIndex = (crc32 ^ data[i]) & 0xff;
-		crc32 = (crc32 >> 8) ^ CRCTable[lookupIndex];  // CRCTable is an array of 256 32-bit constants
-	}
+// 	for (size_t i = 0; i < data_length; i++) {
+// 		const uint32_t lookupIndex = (crc32 ^ data[i]) & 0xff;
+// 		crc32 = (crc32 >> 8) ^ CRCTable[lookupIndex];  // CRCTable is an array of 256 32-bit constants
+// 	}
 	
-	// Finalize the CRC-32 value by inverting all the bits
-	crc32 ^= 0xFFFFFFFFu;
-	return crc32;
-}
-//
+// 	// Finalize the CRC-32 value by inverting all the bits
+// 	crc32 ^= 0xFFFFFFFFu;
+// 	return crc32;
+// }
+//// 인터넷 체크섬
+
 #include <stdio.h>
 #define MAXNUM 100
  
@@ -70,7 +71,7 @@ void sending_message(int* message)
     printf("데이터 입력이 끝났습니다.\n\n");
  
 }
- 
+
 int calculaton_Checksum(int* message)
 {
     /* 임의의 길이를 갖는 메시지를 넘겨받아 Checksum을 계산하여 return한다.*/
@@ -144,6 +145,3 @@ int main(void)
     }
     return 0;
 }
-
-
-출처: https://neuro.tistory.com/131 [Ayoujin]
