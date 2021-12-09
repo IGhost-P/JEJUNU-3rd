@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <!-- 2016108271 양상우 입니다 감사합니다 -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>week11_loading..</title>
+    <style>
+        /* 초기화 */
+
+        html,
+        body,
+        div,
+        span,
+        applet,
+        object,
+        iframe,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        blockquote,
+        pre,
+        a,
+        abbr,
+        acronym,
+        address,
+        big,
+        cite,
+        code,
+        del,
+        dfn,
+        em,
+        img,
+        ins,
+        kbd,
+        q,
+        s,
+        samp,
+        small,
+        strike,
+        strong,
+        sub,
+        sup,
+        tt,
+        var,
+        b,
+        u,
+        i,
+        center,
+        dl,
+        dt,
+        dd,
+        ol,
+        ul,
+        li,
+        fieldset,
+        form,
+        label,
+        legend,
+        table,
+        caption,
+        tbody,
+        tfoot,
+        thead,
+        tr,
+        th,
+        td,
+        article,
+        aside,
+        canvas,
+        details,
+        embed,
+        figure,
+        figcaption,
+        footer,
+        header,
+        hgroup,
+        menu,
+        nav,
+        output,
+        ruby,
+        section,
+        summary,
+        time,
+        mark,
+        audio,
+        video {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
+
+        article,
+        aside,
+        details,
+        figcaption,
+        figure,
+        footer,
+        header,
+        hgroup,
+        menu,
+        nav,
+        section {
+            display: block;
+        }
+
+        body {
+            line-height: 1;
+        }
+
+        ol,
+        ul {
+            list-style: none;
+        }
+
+        blockquote,
+        q {
+            quotes: none;
+        }
+
+        blockquote:before,
+        blockquote:after,
+        q:before,
+        q:after {
+            content: '';
+            content: none;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        .container {
+            width: 100vw;
+            height: 100vh;
+            background: #eee;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box {
+            min-width: 500px;
+            min-height: 50%;
+            background: rebeccapurple;
+        }
+
+        /* 초기화 - 완 */
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ;
+
+        * {
+            --color1: #ADFF2F;
+            --color2: #87CEFA;
+            --color3: #40E0D0;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .wrapper {
+            width: 300px;
+            height: 300px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .wrapper .circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid #87CEFA;
+            animation: ani 3s linear infinite;
+            border-radius: 51% 49% 49% 51% / 23% 78% 22% 77%;
+        }
+
+        @keyframes ani {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .wrapper .circle:nth-child(2) {
+            border: 1px solid #ADFF2F;
+            animation-delay: 1s;
+            border-radius: 30% 70% 68% 32% / 30% 28% 72% 70%;
+        }
+
+        .wrapper .circle:nth-child(3) {
+            border: 1px solid #40E0D0;
+            animation-delay: 6s;
+            border-radius: 70% 30% 69% 31% / 23% 78% 22% 77%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <p>2016108271 양상우의 loading..</p>
+    </div>
+</body>
+
+</html>

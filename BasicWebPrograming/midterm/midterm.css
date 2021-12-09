@@ -132,6 +132,8 @@ body {
     margin: 0;
 }
 
+/* 초기화  */
+
 .main_container {
     width: 100vw;
     height: 100vh;
@@ -171,7 +173,7 @@ body {
 }
 
 .profile_img>img {
-    width: 100px;
+    width: 100%;
     border-radius: 100%;
 }
 

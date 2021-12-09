@@ -1,0 +1,617 @@
+<head>
+    <meta charset="UTF-8">
+    <style>
+        html,
+        body,
+        div,
+        span,
+        applet,
+        object,
+        iframe,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        blockquote,
+        pre,
+        a,
+        abbr,
+        acronym,
+        address,
+        big,
+        cite,
+        code,
+        del,
+        dfn,
+        em,
+        img,
+        ins,
+        kbd,
+        q,
+        s,
+        samp,
+        small,
+        strike,
+        strong,
+        sub,
+        sup,
+        tt,
+        var,
+        b,
+        u,
+        i,
+        center,
+        dl,
+        dt,
+        dd,
+        ol,
+        ul,
+        li,
+        fieldset,
+        form,
+        label,
+        legend,
+        table,
+        caption,
+        tbody,
+        tfoot,
+        thead,
+        tr,
+        th,
+        td,
+        article,
+        aside,
+        canvas,
+        details,
+        embed,
+        figure,
+        figcaption,
+        footer,
+        header,
+        hgroup,
+        menu,
+        nav,
+        output,
+        ruby,
+        section,
+        summary,
+        time,
+        mark,
+        audio,
+        video {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
+
+        article,
+        aside,
+        details,
+        figcaption,
+        figure,
+        footer,
+        header,
+        hgroup,
+        menu,
+        nav,
+        section {
+            display: block;
+        }
+
+        body {
+            line-height: 1;
+        }
+
+        ol,
+        ul {
+            list-style: none;
+        }
+
+        blockquote,
+        q {
+            quotes: none;
+        }
+
+        blockquote:before,
+        blockquote:after,
+        q:before,
+        q:after {
+            content: '';
+            content: none;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        :root {
+            --color_backgrond: #0D1117;
+            --color_line: rgba(251, 251, 251, 0.2);
+            --color_str: rgba(251, 251, 251, 0.8);
+            --color4_cube: #ffffff55;
+        }
+
+        .box {
+            display: flex;
+            /* border: 1px solid gray; */
+            color: white;
+        }
+
+        .container {
+            background-color: var(--color_backgrond);
+            width: 100vw;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        .header {
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 10%;
+            border-bottom: 0.01rem solid var(--color_line);
+        }
+
+        .content {
+            width: 100%;
+            height: auto;
+            display: flex;
+            justify-content: center;
+
+        }
+
+        .left {
+            flex-direction: column;
+            align-items: flex-start;
+            padding-left: 15px;
+            width: 30%;
+        }
+
+        .footer {
+            height: 10%;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            border-top: 00.01rem solid var(--color_line);
+        }
+
+        .footer>span {
+            padding-left: 5px;
+            padding-top: 2px;
+            font-size: 0.8rem;
+            font-weight: 200;
+            color: var(--color_str);
+        }
+
+        .center {
+            align-items: start;
+            justify-content: center;
+            flex-direction: column;
+            padding: 30px;
+            width: 100%;
+            height: auto;
+        }
+
+        .about {
+            padding: 20px;
+            width: 80%;
+            height: auto;
+            border: 0.01rem solid rgba(251, 251, 251, 0.2);
+            border-radius: 10px;
+        }
+
+        .inline_code {
+            color: #79C0FF;
+            border-radius: 10px;
+            background-color: #161B22;
+            overflow: auto;
+        }
+
+        .color_red {
+            color: #F87870;
+        }
+
+        .color_orange {
+            color: #FFA657;
+        }
+
+        .color_white {
+            color: white;
+        }
+
+        .color_bright {
+            color: #A5D6FF;
+        }
+
+        .first_say {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .about_say {
+            font-size: 1.2rem;
+            font-style: italic;
+        }
+
+        .more_say {
+            font-size: 1.6rem;
+        }
+
+        .last_say {
+            font-size: 1.2rem;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .experience {
+            width: 80%;
+            height: 200px;
+            overflow: auto
+        }
+
+        .experience_box {
+            padding-top: 10px;
+            margin-left: 10px;
+            border-top: 0.01rem solid rgba(251, 251, 251, 0.2);
+            border-left: 0.01rem solid rgba(251, 251, 251, 0.2);
+        }
+
+        .experience_title {
+            background-color: #0D1117;
+            padding-right: 10px;
+            padding-bottom: 5px;
+            position: relative;
+            top: 10px;
+            z-index: 1;
+        }
+
+        .work {
+            position: relative;
+            right: 10px;
+        }
+
+        .work_box {
+            flex-direction: row;
+            margin-top: 35px;
+        }
+
+        .work_title {
+            position: relative;
+            bottom: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .work_date {
+            padding-left: 25px;
+            color: #79C0FF;
+        }
+
+        h2 {
+            padding-top: 10px;
+            font-size: 1.2rem;
+        }
+
+        .profile_img>img {
+            position: relative;
+            left: 5;
+            bottom: 25;
+            min-width: 100px;
+            width: 95%;
+            border-radius: 100%;
+            border: 0.2rem solid var(--color_line);
+
+        }
+
+        .ghost {
+            animation: motion 0.3s linear 0s infinite alternate;
+            margin-top: 0;
+        }
+
+        .ghost_box {
+            display: inline;
+            position: absolute;
+            vertical-align: middle;
+        }
+
+        @keyframes motion {
+            0% {
+                margin-top: 0px;
+            }
+
+            100% {
+                margin-top: 10px;
+            }
+        }
+
+        .profile_name {
+            font-size: 2.3rem;
+            font-weight: 900;
+            color: rgba(251, 251, 251, 0.9);
+        }
+
+        .profile_name_sub {
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: rgba(251, 251, 251, 0.6);
+        }
+
+        .cube {
+            width: 40px;
+            height: 40px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform-style: preserve-3d;
+            /*transition: 2s;*/
+            animation: ani 5s linear infinite;
+        }
+
+        @keyframes ani {
+            0% {
+                transform: rotateY(0deg) rotateX(0deg);
+            }
+
+            100% {
+                transform: rotateX(1turn) rotateY(1turn);
+            }
+        }
+
+
+        .cube div {
+            width: 100%;
+            height: 100%;
+            background-color: var(--color4_cube);
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 1em;
+            font-weight: 800;
+            letter-spacing: .2em;
+        }
+
+        .cube .C_top,
+        .cube .C_bottom {
+            width: 40px;
+            height: 40px;
+        }
+
+        .cube .C_left,
+        .cube .C_right {
+            width: 40px;
+            height: 40px;
+        }
+
+        .cube .C_top {
+            transform: rotateX(90deg) translateZ(20px);
+            background-color: var(--color4_cube);
+        }
+
+        .cube .C_bottom {
+            transform: rotateX(-90deg) translateZ(20px);
+            background-color: var(--color4_cube);
+        }
+
+        .cube .C_left {
+            transform: rotateY(-90deg) translateZ(20px);
+            background-color: var(--color4_cube);
+        }
+
+        .cube .C_right {
+            transform: rotateY(90deg) translateZ(20px);
+            background-color: var(--color4_cube);
+        }
+
+        .cube .C_front {
+            transform: translateZ(20px);
+            background-color: var(--color4_cube);
+        }
+
+        .cube .C_back {
+            transform: rotateY(0.5turn) translateZ(20px);
+            background-color: var(--color4_cube);
+        }
+
+        /* 반응형 */
+        @media all and (max-width: 840px) {
+            * {
+                transition: all 0.85s;
+            }
+
+            .content {
+                flex-direction: column;
+            }
+
+            .left {
+                width: 100%;
+                align-items: center;
+            }
+
+            .profile_img>img {
+                position: inherit;
+                display: flex;
+                left: auto;
+                bottom: auto;
+                margin: 0 auto;
+                margin-top: 20px;
+                width: 20%;
+            }
+
+            .center {
+                align-items: center;
+                padding-left: 0;
+            }
+        }
+
+        @media all and (min-width: 840px) {
+            * {
+                transition: all 1s;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="box header">
+            <div class="cube">
+                <div class="C_front">1</div>
+                <div class="C_back">2</div>
+                <div class="C_top">3</div>
+                <div class="C_bottom">4</div>
+                <div class="C_left">5</div>
+                <div class="C_right">6</div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="box left">
+                <div class="profile_img"><img src="https://ighost-p.github.io/blog/assets/images/FullSizeRender.jpg"
+                        alt="내 사진">
+                </div>
+                <br />
+                <h3 class="profile_name"> Sang Woo Yang</h3>
+                <sub class="profile_name_sub">IGhost-P : <br /> FrontEnd developer</sub>
+            </div>
+            <div class="box center">
+                <!-- ABOUT ME -->
+                <div class="about">
+                    <h2 class="first_say"> Hi, I'm Sang Woo Yang! <div class="ghost_box"><img class="ghost"
+                                src=ghost.png width="30" alt="ghost"></div>
+                    </h2>
+                    <hr />
+                    <br />
+                    <p class="about_say"> learning ForntEnd at University of Jeju </p>
+                    <p class="about_say"> FE part at Team Brakio</p>
+                    <br />
+                    <p>
+                        <a href="https://velog.io/@dndb3599"><img
+                                src="http://img.shields.io/badge/-Velog-20c997?style=flat&amp;link=https://velog.io/@dndb3599"
+                                alt="Velog Badge"></a>
+                        <a href="https://www.facebook.com/groups/535091431030592"><img
+                                src="http://img.shields.io/badge/-Facebook-1877F2?style=flat&amp;logo=facebook&amp;link=https://www.facebook.com/groups/535091431030592"
+                                alt="Facebook Badge"></a>
+                        <a href="https://github.com/IGhost-P"><img
+                                src="https://img.shields.io/github/followers/thaiane?label=follow&amp;style=social"
+                                alt="GitHub IGHost-P"></a>
+                    </p>
+                    <br />
+
+                    <img src="https://media.giphy.com/media/VgCDAzcKvsR6OM0uWg/giphy.gif" width="50" alt="cat">
+                    <h2 class="more_say">A little more about me...</h2>
+                    <br />
+                    <pre class="inline_code">
+                    <code>
+    <span class="color_red">const</span> <span class="color_orange">IGhost-P</span> = {
+        pronouns<span class="color_white">:</span> <span class="color_bright">"he" | "him",</span>
+        code<span class="color_white">:</span>  <span class="color_white">[</span><span class="color_orange">Javascript, Typescript</span>, HTML, CSS,<span class="color_orange"> Python, C++, Sql</span> <span class="color_white">],</span>
+        askMeAbout<span class="color_white">:</span>  <span class="color_white">[</span><span class="color_bright">"web dev", "FE", "Univ-slave", "healthChang"</span></span><span class="color_white">],</span>
+        tools<span class="color_white">:</span>  <span class="color_white">[</span><span class="color_orange">React, Redux, Node, Styled-Components, Express,</span> RN<span class="color_white">],</span>
+        architecture<span class="color_white">:</span>  <span class="color_white">[</span><span class="color_bright">"Progressive web applications", "Single page applications", "Serverless Architecture"</span><span class="color_white">],</span>
+        techCommunities<span class="color_white">:</span>  <span class="color_white">{</span>
+                                coorganizer<span class="color_white">:</span>  <span class="color_bright">"Brakio"</span>,
+                                majorStudy<span class="color_white">:</span>  <span class="color_bright">"Jurassic"</span>
+                                <span class="color_white">},</span>
+        currentFocus<span class="color_white">:</span>  <span class="color_bright">"Front-End Development"</span> <span class="color_white">,</span>
+        developMotto<span class="color_white">:</span>  <span class="color_bright">"Talk is cheap. Show me the code."</span>
+        <span class="color_white">}</span>
+                    </code>
+                </pre>
+                    <br />
+                    <h2 class="last_say">I love connecting with different people so if you want to say hi, I'll be happy
+                        to meet you more! :)</h2>
+                </div>
+                <!-- MY WORK EXPERIENCE -->
+                <br />
+                <h2> My work experience</h2>
+                <br />
+                <div class="experience">
+                    <span class="experience_title">experience</span>
+                    <div class="experience_box">
+                        <div class="work_box
+                        ">
+                            <img class="work" src="project.svg" width="20" alt="work">
+                            <span class="work_title">제주클리하우스 프로젝트</span>
+                            <br />
+                            <span class="work_date">2021.06</span>
+                        </div>
+                        <div class="work_box
+                        ">
+                            <img class="work" src="award.svg" width="20" alt="work">
+                            <span class="work_title">스마트 SW경진 대회 대상</span>
+                            <br />
+                            <span class="work_date">2021.06</span>
+                        </div>
+                        <div class="work_box
+                        ">
+                            <img class="work" src="award.svg" width="20" alt="work">
+                            <span class="work_title">제주 공공데이터 창업 경진 대회 우수상</span>
+                            <br />
+                            <span class="work_date">2021.06</span>
+                        </div>
+                        <div class="work_box
+                        ">
+                            <img class="work" src="project.svg" width="20" alt="work">
+                            <span class="work_title">마이타민 프로젝트</span>
+                            <br />
+                            <span class="work_date">2021.07</span>
+                        </div>
+                        <div class="work_box
+                        ">
+                            <img class="work" src="award.svg" width="20" alt="work">
+                            <span class="work_title">K-해커톤 결선 진출</span>
+                            <br />
+                            <span class="work_date">2021.08</span>
+                        </div>
+                        <div class="work_box
+                        ">
+                            <img class="work" src="award.svg" width="20" alt="work">
+                            <span class="work_title">SW 창업경진 대회 우수상</span>
+                            <br />
+                            <span class="work_date">2021.09</span>
+                        </div>
+                        <div class="work_box
+                        ">
+                            <img class="work" src="award.svg" width="20" alt="work">
+                            <span class="work_title">K-해커톤 장려상</span>
+                            <br />
+                            <span class="work_date">2021.10</span>
+                        </div>
+                        <div class="work_box
+                        ">
+                            <img class="work" src="award.svg" width="20" alt="work">
+                            <span class="work_title">스마트 SW 경진대회 대상</span>
+                            <br />
+                            <span class="work_date">2021.12</span>
+                        </div>
+                        <div class="work_box
+                        ">
+                            <img class="work" src="project.svg" width="20" alt="work">
+                            <span class="work_title">까미노 프로젝트</span>
+                            <br />
+                            <span class="work_date">2021.12</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box footer">
+            <a href="https://www.notion.so/ee5ba57e2fdf48feb4e84475653b0e28">
+                <img src="brakio.svg" width="35px" alt="brakio"></a> <span>@ 2021 TeamBrakio</span>
+        </div>
+    </div>
+</body>
