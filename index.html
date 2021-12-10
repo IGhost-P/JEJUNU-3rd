@@ -17,7 +17,10 @@
         p,
         blockquote,
         pre,
-        a,
+        a{text-decoration: none;}
+        a:link { color: rgb(255, 255, 255); text-decoration: none;}
+        a:visited { color: rgb(255, 255, 255); text-decoration: none;}
+        a:hover { color: rgb(131, 131, 131); text-decoration: underline;}
         abbr,
         acronym,
         address,
@@ -174,9 +177,10 @@
 
         .left {
             margin-left: 10px;
+            margin-right: 10px;
             flex-direction: column;
             align-items: flex-start;
-            min-width: 260px;
+            width: 30%;
         }
 
         .footer {
@@ -316,6 +320,10 @@
             border-radius: 100%;
             border: 0.2rem solid var(--color-line);
 
+        }
+        .change{
+            border-left: 0.01rem solid var(--color-line);
+            padding-left: 10px;
         }
 
         .ghost {
@@ -525,6 +533,20 @@
                 align-items: center;
                 padding-left: 0;
             }
+            .menu{
+                text-align: center;
+            }
+            .change{
+                width: 100%;
+                text-align: center;
+                padding: 0;
+                border: none;
+                display: flex;
+                justify-content: space-between;
+            }
+            .change > li {
+                margin: 0 40px;
+            }
         }
 
 
@@ -557,11 +579,20 @@
                     <br />
                     <h3 class="profile-name"> Sang Woo Yang</h3>
                     <sub class="profile-name-sub">IGhost-P : <br /> FrontEnd developer</sub>
+
+                    <div class="menu">
+                        <h2>MENU</h2>
+                            <ul class="change">
+                                <li><a href="#about">About Me</a></li>
+                                <li><a href="#experience">My Work experience</a></li>
+                                <li><a href="#skills">My Skills</a></li>
+                            </ul>
+                        </div>
                 </div>
             </div>
             <div class="box center">
                 <!-- ABOUT ME -->
-                <div class="about">
+                <div class="about" id="about">
                     <h2 class="first-say"> Hi, I'm Sang Woo Yang! <div class="ghost-box"><img class="ghost"
                                 src=ghost.png width="30" alt="ghost"></div>
                     </h2>
@@ -608,7 +639,7 @@
                         to meet you more! :)</h2>
                 </div>
                 <!-- MY WORK EXPERIENCE -->
-                <h2> My work experience</h2>
+                <h2 id="experience"> My work experience</h2>
                 <br />
                 <div class="experience">
                     <span class="experience-title">experience</span>
@@ -679,7 +710,7 @@
                     </div>
                 </div>
                 <!-- My skill -->
-                <h2>My Skill</h2>
+                <h2 id="skills">My Skills</h2>
                 <div class="skill">
                     <div class="details">
                         <span>HTML</span>
