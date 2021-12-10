@@ -136,10 +136,11 @@
         }
 
         :root {
-            --color_backgrond: #0D1117;
-            --color_line: rgba(251, 251, 251, 0.2);
-            --color_str: rgba(251, 251, 251, 0.8);
-            --color4_cube: #ffffff55;
+            --color-backgrond: #0D1117;
+            --color-line: rgba(251, 251, 251, 0.2);
+            --color-str: rgba(251, 251, 251, 0.8);
+            --color4-cube: #ffffff55;
+            --color4-code: #79C0FF;
         }
 
         .box {
@@ -149,7 +150,7 @@
         }
 
         .container {
-            background-color: var(--color_backgrond);
+            background-color: var(--color-backgrond);
             width: 100vw;
             min-height: 100vh;
             flex-direction: column;
@@ -160,7 +161,7 @@
             justify-content: center;
             width: 100%;
             height: 10%;
-            border-bottom: 0.01rem solid var(--color_line);
+            border-bottom: 0.01rem solid var(--color-line);
         }
 
         .content {
@@ -184,7 +185,7 @@
             width: 100%;
             align-items: center;
             justify-content: center;
-            border-top: 00.01rem solid var(--color_line);
+            border-top: 00.01rem solid var(--color-line);
         }
 
         .footer>span {
@@ -192,7 +193,7 @@
             padding-top: 2px;
             font-size: 0.8rem;
             font-weight: 200;
-            color: var(--color_str);
+            color: var(--color-str);
         }
 
         .center {
@@ -212,44 +213,44 @@
             border-radius: 10px;
         }
 
-        .inline_code {
-            color: #79C0FF;
+        .inline-code {
+            color: var(--color4-code);
             border-radius: 10px;
             background-color: #161B22;
             overflow: auto;
         }
 
-        .color_red {
+        .color-red {
             color: #F87870;
         }
 
-        .color_orange {
+        .color-orange {
             color: #FFA657;
         }
 
-        .color_white {
+        .color-white {
             color: white;
         }
 
-        .color_bright {
+        .color-bright {
             color: #A5D6FF;
         }
 
-        .first_say {
+        .first-say {
             font-size: 2rem;
             font-weight: bold;
         }
 
-        .about_say {
+        .about-say {
             font-size: 1.2rem;
             font-style: italic;
         }
 
-        .more_say {
+        .more-say {
             font-size: 1.6rem;
         }
 
-        .last_say {
+        .last-say {
             font-size: 1.2rem;
             font-weight: bold;
             font-style: italic;
@@ -261,14 +262,14 @@
             overflow: auto
         }
 
-        .experience_box {
+        .experience-box {
             padding-top: 10px;
             margin-left: 10px;
             border-top: 0.01rem solid rgba(251, 251, 251, 0.2);
             border-left: 0.01rem solid rgba(251, 251, 251, 0.2);
         }
 
-        .experience_title {
+        .experience-title {
             background-color: #0D1117;
             padding-right: 10px;
             padding-bottom: 5px;
@@ -282,39 +283,40 @@
             right: 10px;
         }
 
-        .work_box {
+        .work-box {
             flex-direction: row;
             margin-top: 35px;
         }
 
-        .work_title {
+        .work-title {
             position: relative;
             bottom: 10px;
             font-size: 1.2rem;
             font-weight: bold;
         }
 
-        .work_date {
+        .work-date {
             padding-left: 25px;
-            color: #79C0FF;
+            color: var(--color4-code);
         }
 
         h2 {
-            padding-top: 10px;
+            padding-top: 25px;
             font-size: 1.2rem;
         }
+
         .profile {
             position: fixed;
         }
 
-        .profile_img>img {
+        .profile-img>img {
             position: relative;
             left: 5;
             bottom: 25;
             min-width: 100px;
             max-width: 200px;
             border-radius: 100%;
-            border: 0.2rem solid var(--color_line);
+            border: 0.2rem solid var(--color-line);
 
         }
 
@@ -323,7 +325,7 @@
             margin-top: 0;
         }
 
-        .ghost_box {
+        .ghost-box {
             display: inline;
             position: absolute;
             vertical-align: middle;
@@ -339,13 +341,13 @@
             }
         }
 
-        .profile_name {
+        .profile-name {
             font-size: 2.3rem;
             font-weight: 900;
             color: rgba(251, 251, 251, 0.9);
         }
 
-        .profile_name_sub {
+        .profile-name-sub {
             font-size: 1.4rem;
             font-weight: 400;
             color: rgba(251, 251, 251, 0.6);
@@ -377,7 +379,7 @@
         .cube div {
             width: 100%;
             height: 100%;
-            background-color: var(--color4_cube);
+            background-color: var(--color4-cube);
             position: absolute;
             display: flex;
             align-items: center;
@@ -389,47 +391,107 @@
             letter-spacing: .2em;
         }
 
-        .cube .C_top,
-        .cube .C_bottom {
+        .cube .C-top,
+        .cube .C-bottom {
             width: 40px;
             height: 40px;
         }
 
-        .cube .C_left,
-        .cube .C_right {
+        .cube .C-left,
+        .cube .C-right {
             width: 40px;
             height: 40px;
         }
 
-        .cube .C_top {
+        .cube .C-top {
             transform: rotateX(90deg) translateZ(20px);
-            background-color: var(--color4_cube);
+            background-color: var(--color4-cube);
         }
 
-        .cube .C_bottom {
+        .cube .C-bottom {
             transform: rotateX(-90deg) translateZ(20px);
-            background-color: var(--color4_cube);
+            background-color: var(--color4-cube);
         }
 
-        .cube .C_left {
+        .cube .C-left {
             transform: rotateY(-90deg) translateZ(20px);
-            background-color: var(--color4_cube);
+            background-color: var(--color4-cube);
         }
 
-        .cube .C_right {
+        .cube .C-right {
             transform: rotateY(90deg) translateZ(20px);
-            background-color: var(--color4_cube);
+            background-color: var(--color4-cube);
         }
 
-        .cube .C_front {
+        .cube .C-front {
             transform: translateZ(20px);
-            background-color: var(--color4_cube);
+            background-color: var(--color4-cube);
         }
 
-        .cube .C_back {
+        .cube .C-back {
             transform: rotateY(0.5turn) translateZ(20px);
-            background-color: var(--color4_cube);
+            background-color: var(--color4-cube);
         }
+
+        .skill {
+            width: 50%;
+        }
+
+        .details {
+            margin-top: 25px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .bar {
+            position: relative;
+
+            border: 2px solid var(--color4-code);
+
+            border-radius: 20px;
+
+        }
+
+        .bar div {
+            position: relative;
+            width: 0;
+            height: 9px;
+            border-radius: 10px;
+            background-color: var(--color4-code);
+        }
+
+        #html-bar {
+            animation: html-fill 2s forwards;
+        }
+
+        @keyframes html-fill {
+            100% {
+                width: 90%;
+            }
+        }
+
+        #css-bar {
+            animation: css-fill 2s forwards;
+        }
+
+        @keyframes css-fill {
+            100% {
+                width: 75%;
+            }
+        }
+
+        #javascript-bar {
+            animation: js-fill 2s forwards;
+        }
+
+        @keyframes js-fill {
+            100% {
+                width: 72%;
+            }
+        }
+
 
         /* 반응형 */
         @media all and (max-width: 840px) {
@@ -445,11 +507,12 @@
                 width: 100%;
                 align-items: center;
             }
-            .profile{
+
+            .profile {
                 position: inherit;
             }
 
-            .profile_img>img {
+            .profile-img>img {
                 position: inherit;
                 display: flex;
                 left: auto;
@@ -465,6 +528,7 @@
             }
         }
 
+
         @media all and (min-width: 840px) {
             * {
                 transition: all 1s;
@@ -477,35 +541,35 @@
     <div class="container">
         <div class="box header">
             <div class="cube">
-                <div class="C_front">1</div>
-                <div class="C_back">2</div>
-                <div class="C_top">3</div>
-                <div class="C_bottom">4</div>
-                <div class="C_left">5</div>
-                <div class="C_right">6</div>
+                <div class="C-front">1</div>
+                <div class="C-back">2</div>
+                <div class="C-top">3</div>
+                <div class="C-bottom">4</div>
+                <div class="C-left">5</div>
+                <div class="C-right">6</div>
             </div>
         </div>
         <div class="content">
             <div class="box left">
                 <div class="profile">
-                <div class="profile_img"><img src="https://ighost-p.github.io/blog/assets/images/FullSizeRender.jpg"
-                        alt="내 사진" width="200px">
+                    <div class="profile-img"><img src="https://ighost-p.github.io/blog/assets/images/FullSizeRender.jpg"
+                            alt="내 사진" width="200px">
+                    </div>
+                    <br />
+                    <h3 class="profile-name"> Sang Woo Yang</h3>
+                    <sub class="profile-name-sub">IGhost-P : <br /> FrontEnd developer</sub>
                 </div>
-                <br />
-                <h3 class="profile_name"> Sang Woo Yang</h3>
-                <sub class="profile_name_sub">IGhost-P : <br /> FrontEnd developer</sub>
-            </div>
             </div>
             <div class="box center">
                 <!-- ABOUT ME -->
                 <div class="about">
-                    <h2 class="first_say"> Hi, I'm Sang Woo Yang! <div class="ghost_box"><img class="ghost"
+                    <h2 class="first-say"> Hi, I'm Sang Woo Yang! <div class="ghost-box"><img class="ghost"
                                 src=ghost.png width="30" alt="ghost"></div>
                     </h2>
                     <hr />
                     <br />
-                    <p class="about_say"> learning ForntEnd at University of Jeju </p>
-                    <p class="about_say"> FE part at Team Brakio</p>
+                    <p class="about-say"> learning ForntEnd at University of Jeju </p>
+                    <p class="about-say"> FE part at Team Brakio</p>
                     <br />
                     <p>
                         <a href="https://velog.io/@dndb3599"><img
@@ -521,117 +585,125 @@
                     <br />
 
                     <img src="https://media.giphy.com/media/VgCDAzcKvsR6OM0uWg/giphy.gif" width="50" alt="cat">
-                    <h2 class="more_say">A little more about me...</h2>
+                    <h2 class="more-say">A little more about me...</h2>
                     <br />
-                    <pre class="inline_code">
+                    <pre class="inline-code">
                     <code>
-    <span class="color_red">const</span> <span class="color_orange">IGhost-P</span> = {
-        pronouns<span class="color_white">:</span> <span class="color_bright">"he" | "him",</span>
-        code<span class="color_white">:</span>  <span class="color_white">[</span><span class="color_orange">Javascript, Typescript</span>, HTML, CSS,<span class="color_orange"> Python, C++, Sql</span> <span class="color_white">],</span>
-        askMeAbout<span class="color_white">:</span>  <span class="color_white">[</span><span class="color_bright">"web dev", "FE", "Univ-slave", "healthChang"</span></span><span class="color_white">],</span>
-        tools<span class="color_white">:</span>  <span class="color_white">[</span><span class="color_orange">React, Redux, Node, Styled-Components, Express,</span> RN<span class="color_white">],</span>
-        architecture<span class="color_white">:</span>  <span class="color_white">[</span><span class="color_bright">"Progressive web applications", "Single page applications", "Serverless Architecture"</span><span class="color_white">],</span>
-        techCommunities<span class="color_white">:</span>  <span class="color_white">{</span>
-                                coorganizer<span class="color_white">:</span>  <span class="color_bright">"Brakio"</span>,
-                                majorStudy<span class="color_white">:</span>  <span class="color_bright">"Jurassic"</span>
-                                <span class="color_white">},</span>
-        currentFocus<span class="color_white">:</span>  <span class="color_bright">"Front-End Development"</span> <span class="color_white">,</span>
-        developMotto<span class="color_white">:</span>  <span class="color_bright">"Talk is cheap. Show me the code."</span>
-        <span class="color_white">}</span>
+    <span class="color-red">const</span> <span class="color-orange">IGhost-P</span> = {
+        pronouns<span class="color-white">:</span> <span class="color-bright">"he" | "him",</span>
+        code<span class="color-white">:</span>  <span class="color-white">[</span><span class="color-orange">Javascript, Typescript</span>, HTML, CSS,<span class="color-orange"> Python, C++, Sql</span> <span class="color-white">],</span>
+        askMeAbout<span class="color-white">:</span>  <span class="color-white">[</span><span class="color-bright">"web dev", "FE", "Univ-slave", "healthChang"</span></span><span class="color-white">],</span>
+        tools<span class="color-white">:</span>  <span class="color-white">[</span><span class="color-orange">React, Redux, Node, Styled-Components, Express,</span> RN<span class="color-white">],</span>
+        architecture<span class="color-white">:</span>  <span class="color-white">[</span><span class="color-bright">"Progressive web applications", "Single page applications", "Serverless Architecture"</span><span class="color-white">],</span>
+        techCommunities<span class="color-white">:</span>  <span class="color-white">{</span>
+                                coorganizer<span class="color-white">:</span> <span class="color-bright">"Brakio"</span>,
+                                majorStudy<span class="color-white">:</span>  <span class="color-bright">"Jurassic"</span>
+                                <span class="color-white">},</span>
+        currentFocus<span class="color-white">:</span>  <span class="color-bright">"Front-End Development"</span> <span class="color-white">,</span>
+        developMotto<span class="color-white">:</span>  <span class="color-bright">"Talk is cheap. Show me the code."</span>
+        <span class="color-white">}</span>
                     </code>
                 </pre>
                     <br />
-                    <h2 class="last_say">I love connecting with different people so if you want to say hi, I'll be happy
+                    <h2 class="last-say">I love connecting with different people so if you want to say hi, I'll be happy
                         to meet you more! :)</h2>
                 </div>
                 <!-- MY WORK EXPERIENCE -->
-                <br />
                 <h2> My work experience</h2>
                 <br />
                 <div class="experience">
-                    <span class="experience_title">experience</span>
-                    <div class="experience_box">
-                        <div class="work_box
+                    <span class="experience-title">experience</span>
+                    <div class="experience-box">
+                        <div class="work-box
                         ">
                             <img class="work" src="project.svg" width="20" alt="work">
-                            <span class="work_title">제주클리하우스 프로젝트</span>
+                            <span class="work-title">제주클리하우스 프로젝트</span>
                             <br />
-                            <span class="work_date">2021.06</span>
+                            <span class="work-date">2021.06</span>
                         </div>
-                        <div class="work_box
+                        <div class="work-box
                         ">
                             <img class="work" src="award.svg" width="20" alt="work">
-                            <span class="work_title">스마트 SW경진 대회 대상</span>
+                            <span class="work-title">스마트 SW경진 대회 대상</span>
                             <br />
-                            <span class="work_date">2021.06</span>
+                            <span class="work-date">2021.06</span>
                         </div>
-                        <div class="work_box
+                        <div class="work-box
                         ">
                             <img class="work" src="award.svg" width="20" alt="work">
-                            <span class="work_title">제주 공공데이터 창업 경진 대회 우수상</span>
+                            <span class="work-title">제주 공공데이터 창업 경진 대회 우수상</span>
                             <br />
-                            <span class="work_date">2021.06</span>
+                            <span class="work-date">2021.06</span>
                         </div>
-                        <div class="work_box
+                        <div class="work-box
                         ">
                             <img class="work" src="project.svg" width="20" alt="work">
-                            <span class="work_title">마이타민 프로젝트</span>
+                            <span class="work-title">마이타민 프로젝트</span>
                             <br />
-                            <span class="work_date">2021.07</span>
+                            <span class="work-date">2021.07</span>
                         </div>
-                        <div class="work_box
+                        <div class="work-box
                         ">
                             <img class="work" src="award.svg" width="20" alt="work">
-                            <span class="work_title">K-해커톤 결선 진출</span>
+                            <span class="work-title">K-해커톤 결선 진출</span>
                             <br />
-                            <span class="work_date">2021.08</span>
+                            <span class="work-date">2021.08</span>
                         </div>
-                        <div class="work_box
+                        <div class="work-box
                         ">
                             <img class="work" src="award.svg" width="20" alt="work">
-                            <span class="work_title">SW 창업경진 대회 우수상</span>
+                            <span class="work-title">SW 창업경진 대회 우수상</span>
                             <br />
-                            <span class="work_date">2021.09</span>
+                            <span class="work-date">2021.09</span>
                         </div>
-                        <div class="work_box
+                        <div class="work-box
                         ">
                             <img class="work" src="award.svg" width="20" alt="work">
-                            <span class="work_title">K-해커톤 장려상</span>
+                            <span class="work-title">K-해커톤 장려상</span>
                             <br />
-                            <span class="work_date">2021.10</span>
+                            <span class="work-date">2021.10</span>
                         </div>
-                        <div class="work_box
+                        <div class="work-box
                         ">
                             <img class="work" src="award.svg" width="20" alt="work">
-                            <span class="work_title">스마트 SW 경진대회 대상</span>
+                            <span class="work-title">스마트 SW 경진대회 대상</span>
                             <br />
-                            <span class="work_date">2021.12</span>
+                            <span class="work-date">2021.12</span>
                         </div>
-                        <div class="work_box
+                        <div class="work-box
                         ">
                             <img class="work" src="project.svg" width="20" alt="work">
-                            <span class="work_title">까미노 프로젝트</span>
+                            <span class="work-title">까미노 프로젝트</span>
                             <br />
-                            <span class="work_date">2021.12</span>
+                            <span class="work-date">2021.12</span>
                         </div>
                     </div>
                 </div>
                 <!-- My skill -->
                 <h2>My Skill</h2>
-                <p>d</p>
-                <p>d</p>
-                <p>d</p>
-                <p>d</p>
-                <p>d</p>
-                <p>d</p>
-                <p>d</p>
-                <p>d</p>
-                <p>d</p>
-                <p>d</p>
-                <p>d</p>
-                <p>d</p>
-                <p>d</p>
-
+                <div class="skill">
+                    <div class="details">
+                        <span>HTML</span>
+                        <span>90%</span>
+                    </div>
+                    <div class="bar">
+                        <div id="html-bar"></div>
+                    </div>
+                    <div class="details">
+                        <span>CSS</span>
+                        <span>75%</span>
+                    </div>
+                    <div class="bar">
+                        <div id="css-bar"></div>
+                    </div>
+                    <div class="details">
+                        <span>Javascript</span>
+                        <span>72%</span>
+                    </div>
+                    <div class="bar">
+                        <div id="javascript-bar"></div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="box footer">
