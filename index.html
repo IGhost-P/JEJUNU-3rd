@@ -497,6 +497,15 @@
                 width: 72%;
             }
         }
+        .up-btn{
+            width: 72%;
+            height: 43%;
+            align-items: flex-end;
+            display: flex;
+            justify-content: flex-end;
+            position: fixed;
+            animation: motion 0.3s linear 0s infinite alternate;
+        }
 
 
         /* 반응형 */
@@ -547,6 +556,16 @@
             .change > li {
                 margin: 0 40px;
             }
+
+            .up-btn{
+            width: 98%;
+            height: 0;
+            align-items: flex-end;
+            display: flex;
+            justify-content: flex-end;
+            position: fixed;
+            animation: motion 0.4s linear 0s infinite alternate;
+        }
         }
 
 
@@ -560,7 +579,7 @@
 
 <body>
     <div class="container">
-        <div class="box header">
+        <div class="box header" id="header">
             <div class="cube">
                 <div class="C-front">1</div>
                 <div class="C-back">2</div>
@@ -733,12 +752,15 @@
                     <div class="bar">
                         <div id="javascript-bar"></div>
                     </div>
-                </div>
             </div>
+        <div class="up-btn">
+        <a href="#header"><img src="/up2.svg" alt="up" width="30px"></a>
+        </div>
+        </div>
         </div>
         <div class="box footer">
             <a href="https://www.notion.so/ee5ba57e2fdf48feb4e84475653b0e28">
-                <img src="brakio.svg" width="35px" alt="brakio"></a> <span>@ 2021 IGhost-P with TeamBrakio</span>
+                <img src="brakio.svg" width="35px" alt="brakio" ></a> <span>@ 2021 IGhost-P with TeamBrakio</span>
         </div>
     </div>
 </body>
