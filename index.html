@@ -497,7 +497,19 @@
                 width: 72%;
             }
         }
-
+        .up{
+            width: 50px;
+            height: 50px;
+            position:fixed;
+            bottom: 100;
+            right: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .up > img{
+            animation: motion 0.4s linear 0s infinite alternate;
+        }
 
         /* 반응형 */
         @media all and (max-width: 980px) {
@@ -560,7 +572,7 @@
 
 <body>
     <div class="container">
-        <div class="box header">
+        <div class="box header" id="header">
             <div class="cube">
                 <div class="C-front">1</div>
                 <div class="C-back">2</div>
@@ -733,6 +745,13 @@
                     <div class="bar">
                         <div id="javascript-bar"></div>
                     </div>
+                </div>
+                <div class="up-btn">
+                    <a href="#header">
+                    <div class="up">
+                    <img src="up.svg" alt="up" width="30px">
+                </div>
+            </a>
                 </div>
             </div>
         </div>
