@@ -163,7 +163,7 @@ body {
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 10%;
+    height: 100px;
     border-bottom: 0.01rem solid var(--color-line);
 }
 
@@ -310,11 +310,14 @@ h2 {
 .profile {
     position: fixed;
 }
+.profile-img{
+    display: flex;
+}
 
 .profile-img>img {
     position: relative;
-    left: 5;
-    bottom: 25;
+    left: 5px;
+    bottom: 25px;
     min-width: 100px;
     max-width: 200px;
     border-radius: 100%;
