@@ -168,7 +168,7 @@ body {
 }
 
 .content {
-    width: auto;
+    width: 100%;
     height: auto;
     display: flex;
     justify-content: center;
@@ -576,7 +576,7 @@ svg text:nth-child(9) {
 
 
 /* 반응형 */
-@media all and (max-width: 640px) {
+@media all and (max-width: 980px) {
     * {
         transition: all 1s;
     }
@@ -594,6 +594,7 @@ svg text:nth-child(9) {
 
     .profile {
         position: inherit;
+        width: 80%;
     }
 
     .profile-img>img {
@@ -620,9 +621,6 @@ svg text:nth-child(9) {
         border: none;
         display: flex;
         justify-content: space-between;
-    }
-    .change > li {
-        margin: 0 40px;
     }
 }
 
