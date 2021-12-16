@@ -168,7 +168,7 @@ body {
 }
 
 .content {
-    width: 100%;
+    width: auto;
     height: auto;
     display: flex;
     justify-content: center;
@@ -176,8 +176,6 @@ body {
 }
 
 .left {
-    margin-left: 10px;
-    margin-right: 10px;
     flex-direction: column;
     align-items: flex-start;
     width: 30%;
@@ -200,6 +198,7 @@ body {
 }
 
 .center {
+    width: 100%;
     align-items: start;
     justify-content: center;
     flex-direction: column;
@@ -577,13 +576,14 @@ svg text:nth-child(9) {
 
 
 /* 반응형 */
-@media all and (max-width: 980px) {
+@media all and (max-width: 640px) {
     * {
         transition: all 1s;
     }
 
     .content {
         flex-direction: column;
+        width: 100%;
     }
 
     .left {
