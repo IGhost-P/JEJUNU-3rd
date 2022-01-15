@@ -48,6 +48,6 @@ for name_71 in fnameAry_71[1:]:
             current_71 = current_71.right_71
 dupNameAry_71 = list(set(dupNameAry_71))
 
-print("2016108271 양상우 4차시 과제")
+print("----------2016108271 양상우 4차시 과제----------")
 print(folderName_71, '및 그 하위 디렉터리의 중복된 파일 목록 ')
 print(dupNameAry_71)
